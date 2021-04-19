@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = trim($_POST["password"]);
     }
     // Prepare a select statement
-    $sql = "SELECT id FROM users WHERE email = ?";
+    $sql = "SELECT n_cliente FROM users WHERE email = ?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters

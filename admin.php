@@ -15,13 +15,11 @@ if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 // We don't have the password or email info stored in sessions so instead we can get the results from the database.
-$stmt = $con->prepare('SELECT users.n_cliente, fichas.n_ficha, fichas.estado, users.nome, fichas.created_at FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente WHERE users.n_cliente = ?');
+$stmt = $con->prepare('SELECT users.n_cliente, users.nome, fichas.n_ficha, fichas.estado, fichas.created_at FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente');
 // In this case we can use the account ID to get the account info.
-$stmt->bind_param('i', $_SESSION['n_cliente']);
 $stmt->execute();
-$stmt->bind_result($n_cliente, $n_ficha, $estado, $nome, $created_at);
+$stmt->bind_result($n_cliente, $nome, $n_ficha, $estado, $created_at);
 $stmt->fetch();
-$_SESSION['i'] = $_SESSION['n_cliente'];
 $stmt->execute();
 $records = array();
 
@@ -45,9 +43,8 @@ $stmt->close();
 <body class="loggedin">
 	<nav class="navtop">
 		<div>
-			<a href="home.php"><i style="padding: 0" class="fas"></i>Página Inicial</a>
-			<a href="profile.php"><i style="margin-left: 600px" class="fas fa-user-circle"></i>Perfil</a>
-			<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Desconectar</a>
+			<a href="admin.php"><i style="padding: 0" class="fas"></i>Página Inicial</a>
+			<a href="logout.php"><i style="margin-left: 700px" class="fas fa-sign-out-alt"></i>Desconectar</a>
 		</div>
 	</nav>
 	<div class="content">
@@ -70,7 +67,7 @@ $stmt->close();
 					background-color: #dddddd;
 				}
 			</style>
-			<p>Bem-vindo, <?= $nome ?>!</p>
+			<p>Bem-vindo, Admin!</p>
 			<h2>Fichas</h2>
 			<tr>
 				<th>Nº Cliente:</th>
