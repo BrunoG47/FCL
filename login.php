@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check if Email is empty
     // Define email error message
     if(empty(trim($_POST["email"]))){
-        $email_err = "Please enter email.";
+        $email_err = "Introduza email.";
     } else{
         $email = trim($_POST["email"]);
     }
@@ -28,7 +28,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check if password is empty
     // Define password error message
     if(empty(trim($_POST["password"]))){
-        $password_err = "Please enter password.";
+        $password_err = "Introduza palavra-passe.";
     } else{
         $password = trim($_POST["password"]);
     }
@@ -117,8 +117,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
     <div class="login">
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
+        <h2>Entrar</h2>
+        <p>Introduza as suas credenciais para entrar.</p>
         <?php 
         if(!empty($login_err)){
             echo '<div class="alert alert-danger">' . $login_err . '</div>';
@@ -141,7 +141,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label for="password">
                     <i class="fas fa-lock"></i>
                 </label>
-                <input type="password" name="password" class="form-control" placeholder="Password"
+                <input type="password" name="password" class="form-control" placeholder="Palavra-passe"
                 <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>>
                 <?php 
         if(!empty($password_err)){
@@ -150,9 +150,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         ?>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+                <input type="submit" class="btn btn-primary" value="Entrar">
             </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+            <p>Não têm uma conta? <a href="register.php">Registe-se agora.</a></p>
         </form>
     </div>
 </body>
