@@ -34,7 +34,7 @@ $stmt->close();
 
 <head>
 	<meta charset="utf-8">
-	<title>Home Page</title>
+	<title>Admin</title>
 	<link href="style1.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -81,7 +81,7 @@ $stmt->close();
 							<td><?php echo $show['n_ficha']; ?></td>
 							<td><?php echo $show['estado']; ?></td>
 							<td><?php echo $show['created_at']; ?></td>
-							<td><a href="admin.php"><i style="padding: 0" class="fas"></i>Editar Ficha</a></td>
+							<td><a href="edit.php"><i style="padding: 0" class="fas"></i>Editar Ficha</a></td>
 							<tr></tr>
 				<?php } ?>
 			</tr>
