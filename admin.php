@@ -81,6 +81,7 @@ $stmt->close();
 							<td><?php echo $show['n_ficha']; ?></td>
 							<td><?php echo $show['estado']; ?></td>
 							<td><?php echo $show['created_at']; ?></td>
+							<td><a href="admin.php"><i style="padding: 0" class="fas"></i>Editar Ficha</a></td>
 							<tr></tr>
 				<?php } ?>
 			</tr>
