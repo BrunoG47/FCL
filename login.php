@@ -68,7 +68,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // A=admin site
                             // R=revendedor site
                             if ($role == 'U') {
-                                $redirect = 'profile.php';
+                                $redirect = 'home.php';
                             } else if ($role == 'A') {
                                 $redirect = 'admin.php';
                             } else if ($role == 'R') {
