@@ -1,47 +1,33 @@
 <?php
-include('config.php');
-if (isset($_REQUEST["n_cliente"])) {
-    $n_cliente = $_REQUEST["n_cliente"];
-    $query = mysqli_query($sucess, "SELECT estado from fichas where n_cliente = ?");
-    $stmt->bind_param('i', $_SESSION['n_cliente']);
-    $stmt->execute();
-    $stmt->bind_result($password, $email, $nome, $morada, $codigo, $nif, $telefone, $n_cliente);
-    $stmt->fetch();
-    $stmt->close();
-    $_SESSION['i'] = $_SESSION['n_cliente'];
-    $row = mysqli_fetch_array($query);
-}
 
-if (isset($_REQUEST["submit"])) {
+include "config.php"; // Using database connection file here
 
-    $estado = $_REQUEST["estado"];
-    $sql = mysqli_query($sucess1, "UPDATE estado = '$estado' where id='$eid'");
-    header('location:select.php');
+$n_ficha = $_GET['n_ficha']; // get id through query string
+
+$qry = mysqli_query($link, "SELECT estado FROM fichas WHERE n_ficha='$n_ficha'"); // select query
+
+$data = mysqli_fetch_array($qry); // fetch data
+
+if (isset($_POST['update'])) // when click on Update button
+{
+    $n_ficha = $_POST['n_ficha'];
+    $estado = $_POST['estado'];
+
+    $edit = mysqli_query($link, "UPDATE fichas set estado='$estado' where n_ficha='$n_ficha'");
+
+    if ($edit) {
+        mysqli_close($link); // Close connection
+        header("location:admin.php"); // redirects to all records page
+        exit;
+    } else {
+        echo mysqli_error($error);
+    }
 }
 ?>
-<form method="post">
-    <table border="1" align="center">
+<h3>Editar Dados</h3>
 
-        <tr>
-            <td>Estado:</td>
-            <td>
-                <select name="estado">
-                    <option value="">Select Any One</option>
-                    <option value="Em diagnóstico" <?php
-                                            if ($row["estado"] == 'Em diagnóstico') {
-                                                echo "selected";
-                                            }
-                                            ?>>Em diagnóstico</option>
-                    <option value="Concluido" <?php
-                                                if ($row["estado"] == 'concluido') {
-                                                    echo "selected";
-                                                }
-                                                ?>>Concluido</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="submit" name="submit"></td>
-        </tr>
-    </table>
+<form method="POST">
+    <input type="text" name="Estado" value="<?php echo $data['estado'] ?>" placeholder="Edite estado" Required>
+    <h3><?php echo $data['n_ficha'] ?></h3>
+    <input type="submit" name="update" value="Editar">
 </form>

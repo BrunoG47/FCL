@@ -22,7 +22,6 @@ $stmt->bind_result($n_cliente, $nome, $n_ficha, $estado, $created_at);
 $stmt->fetch();
 $stmt->execute();
 $records = array();
-
 $result = $stmt->get_result();
 while ($data = $result->fetch_assoc()) {
 	$records[] = $data;
@@ -71,20 +70,28 @@ $stmt->close();
 			<h2>Fichas</h2>
 			<tr>
 				<th>Nº Cliente:</th>
+				<th>Nome Cliente:</th>
 				<th>Nº Ficha:</th>
 				<th>Estado:</th>
 				<th>Data de Criação:</th>
 			</tr>
 			<tr>
-					<?php foreach ($records as $show) { ?>
-							<td><?php echo $show['n_cliente']; ?></td>
-							<td><?php echo $show['n_ficha']; ?></td>
-							<td><?php echo $show['estado']; ?></td>
-							<td><?php echo $show['created_at']; ?></td>
-							<td><a href="edit.php"><i style="padding: 0" class="fas"></i>Editar Ficha</a></td>
-							<tr></tr>
-				<?php } ?>
+				<?php
+				include "config.php";
+				$rec = mysqli_query($link, 'SELECT users.n_cliente, users.nome, fichas.n_ficha, fichas.estado, fichas.created_at FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente');
+				while ($dat = mysqli_fetch_array($rec)) {
+				?>
+			<tr>
+				<td><?php echo $dat['n_cliente']; ?></td>
+				<td><?php echo $dat['nome']; ?></td>
+				<td><?php echo $dat['n_ficha']; ?></td>
+				<td><?php echo $dat['estado']; ?></td>
+				<td><?php echo $dat['created_at']; ?></td>
+				<td><a href="edit.php?n_ficha=<?php echo $data['n_ficha']; ?>">Edit</a></td>
 			</tr>
+		<?php
+				}
+		?>
 		</table>
 	</div>
 </body>
