@@ -1,3 +1,1 @@
-https://www.youtube.com/watch?v=Hw1MwUlekeo
-
-https://www.11zon.com/zon/php/how-to-edit-data-in-php-using-form.php
+https://codeshack.io/crud-application-php-pdo-mysql/

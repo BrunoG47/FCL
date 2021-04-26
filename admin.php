@@ -42,8 +42,9 @@ $stmt->close();
 <body class="loggedin">
 	<nav class="navtop">
 		<div>
-			<a href="admin.php"><i style="padding: 0" class="fas"></i>Página Inicial</a>
-			<a href="logout.php"><i style="margin-left: 700px" class="fas fa-sign-out-alt"></i>Desconectar</a>
+			<a href="admin.php"><i class="fas"></i>Página Inicial</a>
+			<a href="read.php"><i style="margin-left: 510px" class="fas fa-address-book"></i>Clientes</a>
+			<a href="logout.php"><i style="margin-left: 50px" class="fas fa-sign-out-alt"></i>Desconectar</a>
 		</div>
 	</nav>
 	<div class="content">
@@ -87,7 +88,8 @@ $stmt->close();
 				<td><?php echo $dat['n_ficha']; ?></td>
 				<td><?php echo $dat['estado']; ?></td>
 				<td><?php echo $dat['created_at']; ?></td>
-				<td><a href="edit.php?n_ficha=<?php echo $dat['n_ficha']; ?>">Edit</a></td>
+				<td><a href="edit.php?n_ficha=<?php echo $dat['n_ficha'];
+												echo $dat['estado'] ?>">Edit</a></td>
 			</tr>
 		<?php
 				}
