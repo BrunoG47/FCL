@@ -87,7 +87,7 @@ $stmt->close();
 				<td><?php echo $dat['n_ficha']; ?></td>
 				<td><?php echo $dat['estado']; ?></td>
 				<td><?php echo $dat['created_at']; ?></td>
-				<td><a href="edit.php?n_ficha=<?php echo $data['n_ficha']; ?>">Edit</a></td>
+				<td><a href="edit.php?n_ficha=<?php echo $dat['n_ficha']; ?>">Edit</a></td>
 			</tr>
 		<?php
 				}
