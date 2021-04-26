@@ -1,9 +1,8 @@
 <?php
 
 include "config.php"; // Using database connection file here
-if(isset($_GET['n_ficha']))
-{
-$n_ficha = $_GET['n_ficha']; // get id through query string
+if (isset($_GET['n_ficha'])) {
+    $n_ficha = $_GET['n_ficha']; // get id through query string
 }
 $qry = mysqli_query($link, "SELECT estado FROM fichas WHERE n_ficha = '$n_ficha'"); // select query
 
@@ -24,9 +23,24 @@ if (isset($_POST['update'])) // when click on Update button
     }
 }
 ?>
-<h3>Editar Dados</h3>
+<!DOCTYPE html>
+<html>
 
-<form method="POST">
+<head>
+	<meta charset="utf-8">
+	<title>Admin</title>
+	<link href="style1.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body class="loggedin">
+	<nav class="navtop">
+		<div>
+			<h2 style="color: mintcream; margin-top:7px">Editar dados</a>
+		</div>
+	</nav>
+<form method="POST" style="margin-top: 2rem; margin-left: 14rem">
     <input type="text" name="Estado" method="post" value="<?php echo $dat['estado'] ?>" placeholder="Edite estado" Required>
     <input type="submit" name="update" value="Editar">
 </form>
