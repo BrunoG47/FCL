@@ -44,7 +44,7 @@ if (!empty($_POST)) {
         <label for="codigo">Cógido</label>
         <label for="created_at">Data de Criação</label>
         <input type="text" name="codigo" placeholder="Código Postal cliente" id="codigo">
-        <input type="datetime-local" name="created" value="<?= date('Y-m-d\TH:i') ?>" id="created">
+        <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i') ?>" id="created_at">
         <input type="submit" value="Create">
     </form>
     <?php if ($msg) : ?>

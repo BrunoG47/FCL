@@ -42,8 +42,8 @@ $stmt->close();
 <body class="loggedin">
 	<nav class="navtop">
 		<div>
-			<a href="admin.php"><i class="fas"></i>Página Inicial</a>
-			<a href="read.php"><i style="margin-left: 510px" class="fas fa-address-book"></i>Clientes</a>
+			<a href="admin.php"><i class="fas fa-home"></i>Página Inicial</a>
+			<a href="read.php"><i style="margin-left: 490px" class="fas fa-address-book"></i>Clientes</a>
 			<a href="logout.php"><i style="margin-left: 50px" class="fas fa-sign-out-alt"></i>Desconectar</a>
 		</div>
 	</nav>
