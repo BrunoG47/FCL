@@ -2,7 +2,6 @@
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
-$password = '000000';
 $role = 'U';
 // Check if the contact id exists, for example update.php?id=1 will get the contact with the id of 1
 if (isset($_GET['n_cliente'])) {
@@ -17,9 +16,9 @@ if (isset($_GET['n_cliente'])) {
         $codigo = isset($_POST['codigo']) ? $_POST['codigo'] : '';
         $created_at = isset($_POST['created_at']) ? $_POST['created_at'] : date('Y-m-d H:i:s');
         // Update the record
-        $stmt = $pdo->prepare('UPDATE users SET n_cliente = ?, email = ?, password = ?, nome = ?, telefone = ?, nif = ?, morada = ?, codigo = ?, role = ?, created_at = ? WHERE n_cliente = ?');
-        $stmt->execute([$n_cliente, $email, $password, $nome, $telefone, $nif, $morada, $codigo, $role, $created_at, $_GET['n_cliente']]);
-        $msg = 'Updated Successfully!';
+        $stmt = $pdo->prepare('UPDATE users SET n_cliente = ?, email = ?, nome = ?, telefone = ?, nif = ?, morada = ?, codigo = ?, role = ?, created_at = ? WHERE n_cliente = ?');
+        $stmt->execute([$n_cliente, $email, $nome, $telefone, $nif, $morada, $codigo, $role, $created_at, $_GET['n_cliente']]);
+        $msg = 'Edição Bem Sucedida!';
     }
     // Get the contact from the contacts table
     $stmt = $pdo->prepare('SELECT * FROM users WHERE n_cliente = ?');
@@ -32,10 +31,10 @@ if (isset($_GET['n_cliente'])) {
     exit('Nenhum número cliente selecionado!');
 }
 ?>
-<?= template_header('Read') ?>
+<?= template_header('SosToners-Editar Cliente') ?>
 
 <div class="content update">
-    <h2>Update Contact #<?= $contact['n_cliente'] ?></h2>
+    <h2>Editar Cliente #<?= $contact['n_cliente'] ?></h2>
     <form action="update.php?n_cliente=<?= $contact['n_cliente'] ?>" method="post">
         <label for="n_cliente">Número Cliente</label>
         <label for="nome">Nome</label>
@@ -53,7 +52,7 @@ if (isset($_GET['n_cliente'])) {
         <label for="created_at">Data de Criação</label>
         <input type="text" name="codigo" placeholder="Código Postal cliente" value="<?= $contact['codigo'] ?>" id="codigo">
         <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i', strtotime($contact['created_at'])) ?>" id="created_at">
-        <input type="submit" value="Update">
+        <input type="submit" value="Editar">
     </form>
     <?php if ($msg) : ?>
         <p><?= $msg ?></p>

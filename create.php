@@ -2,7 +2,7 @@
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
-$password = '000000';
+$password = '$2y$10$nsX5VBJiR3m/t1t2ElJs8e.95dEUxu8.le7Jm22WYYo4gAvvaHCqi';
 $role = 'U';
 // Check if POST data is not empty
 if (!empty($_POST)) {
@@ -24,14 +24,14 @@ if (!empty($_POST)) {
     $msg = 'Criação Concluida!';
 }
 ?>
-<?= template_header('Criar') ?>
+<?= template_header('SosToners-Criar') ?>
 
 <div class="content update">
     <h2>Criar Cliente</h2>
     <form action="create.php" method="post">
         <label for="n_cliente">Número Cliente</label>
         <label for="nome">Nome</label>
-        <input type="text" name="n_cliente" placeholder="26" value="auto" id="n_cliente">
+        <input type="text" name="n_cliente" placeholder="26" value="auto" id="n_cliente" readonly>
         <input type="text" name="nome" placeholder="Nome cliente" id="nome">
         <label for="email">Email</label>
         <label for="telefone">Telefone</label>

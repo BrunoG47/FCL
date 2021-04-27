@@ -13,7 +13,7 @@ if (isset($_GET['n_cliente'])) {
     }
     // Make sure the user confirms beore deletion
     if (isset($_GET['confirm'])) {
-        if ($_GET['confirm'] == 'yes') {
+        if ($_GET['confirm'] == 'Sim') {
             // User clicked the "Yes" button, delete record
             $stmt = $pdo->prepare('DELETE FROM users WHERE n_cliente = ?');
             $stmt->execute([$_GET['n_cliente']]);
@@ -28,7 +28,7 @@ if (isset($_GET['n_cliente'])) {
     exit('Nenhum número de cliente selecionado!');
 }
 ?>
-<?= template_header('Delete') ?>
+<?= template_header('SosToners-Eliminar') ?>
 
 <div class="content delete">
     <h2>Eliminar Cliente #<?= $contact['n_cliente'] ?></h2>
@@ -37,8 +37,8 @@ if (isset($_GET['n_cliente'])) {
     <?php else : ?>
         <p>Tem a certeza que pretende eliminar o cliente #<?= $contact['n_cliente'] ?>?</p>
         <div class="yesno">
-            <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>&confirm=yes">Yes</a>
-            <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>&confirm=no">No</a>
+            <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>&confirm=Sim">Sim</a>
+            <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>&confirm=Não">Não</a>
         </div>
     <?php endif; ?>
 </div>

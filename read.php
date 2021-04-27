@@ -16,10 +16,10 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Get the total number of contacts, this is so we can determine whether there should be a next and previous button
 $num_contacts = $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
 ?>
-<?= template_header('Read') ?>
+<?= template_header('SosToners-Clientes') ?>
 
 <div class="content read">
-    <h2>Clientes</h2>
+    <h2 style="color: #4a536e;">Clientes</h2>
     <a href="create.php" class="create-contact">Criar Cliente</a>
     <table>
         <thead>
@@ -29,8 +29,6 @@ $num_contacts = $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
                 <td>Nome</td>
                 <td>Telefone</td>
                 <td>NIF</td>
-                <td>Morada</td>
-                <td>Código Postal</td>
                 <td>Data de Criação</td>
                 <td></td>
             </tr>
@@ -43,8 +41,6 @@ $num_contacts = $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
                     <td><?= $contact['nome'] ?></td>
                     <td><?= $contact['telefone'] ?></td>
                     <td><?= $contact['nif'] ?></td>
-                    <td><?= $contact['morada'] ?></td>
-                    <td><?= $contact['codigo'] ?></td>
                     <td><?= $contact['created_at'] ?></td>
                     <td class="actions">
                         <a href="update.php?n_cliente=<?= $contact['n_cliente'] ?>" class="edit"><i class="fas fa-pen fa-xs"></i></a>

@@ -33,7 +33,7 @@ $stmt->close();
 
 <head>
 	<meta charset="utf-8">
-	<title>Admin</title>
+	<title>SosToners-Admin</title>
 	<link href="style1.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -47,7 +47,7 @@ $stmt->close();
 			<a href="logout.php"><i style="margin-left: 50px" class="fas fa-sign-out-alt"></i>Desconectar</a>
 		</div>
 	</nav>
-	<div class="content">
+	<div class="content read">
 		<table>
 			<style>
 				table {
