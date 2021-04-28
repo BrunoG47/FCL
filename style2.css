@@ -109,15 +109,7 @@ body {
 .read table tbody tr:nth-child(even) {
   background-color: #fbfcfc;
 }
-.read table tbody tr:hover {
-  background-color: #376ab7;
-}
-.read table tbody tr:hover td {
-  color: #ffffff;
-}
-.read table tbody tr:hover td:nth-child(1) {
-  color: #ffffff;
-}
+
 .read table tbody tr td {
   padding: 10px;
 }
