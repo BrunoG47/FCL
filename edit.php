@@ -1,5 +1,4 @@
 <?php
-
 include "config.php"; // Using database connection file here
 if (isset($_GET['n_ficha'])) {
     $n_ficha = $_GET['n_ficha']; // get id through query string
@@ -9,8 +8,9 @@ $dat = mysqli_fetch_array($qry); // fetch data
 
 if (isset($_POST['update'])) // when click on Update button
 {
+    $nota = $_POST['Nota'];
     $estado = $_POST['Estado'];
-    $edit = mysqli_query($link, "UPDATE fichas set estado='$estado' where n_ficha = '$n_ficha'");
+    $edit = mysqli_query($link, "UPDATE fichas set estado='$estado', nota='$nota' where n_ficha = '$n_ficha'");
     if ($edit) {
         mysqli_close($link); // Close connection
         header("location:admin.php"); // redirects to all records page
@@ -52,5 +52,6 @@ if (isset($_POST['update'])) // when click on Update button
             <option value="Sem reparação">Sem reparação</option>
             <option value="Para devolução">Para devolução</option>
         </select>
+        <input type="text" name="Nota" method="post">
         <input type="submit" name="update" value="Editar">
     </form>

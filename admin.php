@@ -99,27 +99,29 @@ $stmt->close();
 			<h2 style="color: #4a536e; font-weight: bold; font-size: 22px;">Fichas</h2>
 			<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Procurar">
 			<tr>
-				<th>Nº Cliente:</th>
-				<th>Nome Cliente:</th>
-				<th>Nº Ficha:</th>
-				<th>Estado:</th>
-				<th>Data de Criação:</th>
-				<th>Data de Estado:</th>
-				<th>Problema inicial:</th>
+				<th style="text-align: center">Nº Cliente:</th>
+				<th style="text-align: center">Nome Cliente:</th>
+				<th style="text-align: center">Nº Ficha:</th>
+				<th style="text-align: center">Estado:</th>
+				<th style="text-align: center">Nota:</th>
+				<th style="text-align: center">Data de Criação:</th>
+				<th style="text-align: center">Problema inicial:</th>
+				<th style="text-align: center">Data de Estado:</th>
 			</tr>
 			<tr>
 				<?php
 				include "config.php";
-				$rec = mysqli_query($link, 'SELECT users.n_cliente, users.nome, fichas.n_ficha, fichas.estado, fichas.created_at FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente');
+				$rec = mysqli_query($link, 'SELECT users.n_cliente, users.nome, fichas.n_ficha, fichas.estado, fichas.nota, fichas.created_at, fichas.problema FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente');
 				while ($dat = mysqli_fetch_array($rec)) {
 				?>
 			<tr>
-				<td><?php echo $dat['n_cliente']; ?></td>
-				<td><?php echo $dat['nome']; ?></td>
-				<td><?php echo $dat['n_ficha']; ?></td>
-				<td><?php echo $dat['estado']; ?></td>
-				<td><?php echo $dat['created_at']; ?></td>
-				<td></td>
+				<td style="height: 20px; width: 50px; text-align: center"><?php echo $dat['n_cliente']; ?></td>
+				<td style="text-align: center"><?php echo $dat['nome']; ?></td>
+				<td style="text-align: center"><?php echo $dat['n_ficha']; ?></td>
+				<td style="width: 200px; text-align: center"><?php echo $dat['estado']; ?></td>
+				<td style="width: 150px; text-align: center"><?php echo $dat['nota']; ?></td>
+				<td style="text-align: center"><?php echo $dat['created_at']; ?></td>
+				<td style="width: 150px; text-align: center"><?php echo $dat['problema']; ?></td>
 				<td></td>
 				<td class="btt"><a href="edit.php?n_ficha=<?php echo $dat['n_ficha'];
 															echo $dat['estado'] ?>">Edit</a></td>
@@ -140,9 +142,10 @@ $stmt->close();
 					td1 = tr[i].getElementsByTagName("td")[1];
 					td2 = tr[i].getElementsByTagName("td")[2];
 					td3 = tr[i].getElementsByTagName("td")[3]; // for column two
-					/* ADD columns here that you want you to filter to be used on */
+					td4 = tr[i].getElementsByTagName("td")[4];
+					td6 = tr[i].getElementsByTagName("td")[6];
 					if (td) {
-						if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) || (td1.innerHTML.toUpperCase().indexOf(filter) > -1) || (td2.innerHTML.toUpperCase().indexOf(filter) > -1) || (td3.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+						if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) || (td1.innerHTML.toUpperCase().indexOf(filter) > -1) || (td2.innerHTML.toUpperCase().indexOf(filter) > -1) || (td3.innerHTML.toUpperCase().indexOf(filter) > -1) || (td4.innerHTML.toUpperCase().indexOf(filter) > -1) || (td6.innerHTML.toUpperCase().indexOf(filter) > -1)) {
 							tr[i].style.display = "";
 						} else {
 							tr[i].style.display = "none";
