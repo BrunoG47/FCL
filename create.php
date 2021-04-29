@@ -2,7 +2,6 @@
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
-$password = '$2y$10$nsX5VBJiR3m/t1t2ElJs8e.95dEUxu8.le7Jm22WYYo4gAvvaHCqi';
 $role = 'U';
 // Check if POST data is not empty
 if (!empty($_POST)) {
@@ -18,8 +17,9 @@ if (!empty($_POST)) {
     $codigo = isset($_POST['codigo']) ? $_POST['codigo'] : '';
     $created_at = isset($_POST['created_at']) ? $_POST['created_at'] : date('Y-m-d H:i:s');
     // Insert new record into the contacts table
+    $param_password = password_hash($telefone, PASSWORD_DEFAULT);
     $stmt = $pdo->prepare('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    $stmt->execute([$n_cliente, $email, $password, $nome, $telefone, $nif, $morada, $codigo, $role, $created_at]);
+    $stmt->execute([$n_cliente, $email, $param_password, $nome, $telefone, $nif, $morada, $codigo, $role, $created_at]);
     // Output message
     $msg = 'Criação Concluida!';
 }
@@ -45,7 +45,7 @@ if (!empty($_POST)) {
         <label for="created_at">Data de Criação</label>
         <input type="text" name="codigo" placeholder="Código Postal cliente" id="codigo">
         <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i') ?>" id="created_at">
-        <input type="submit" value="Create">
+        <input type="submit" value="Criar Cliente">
     </form>
     <?php if ($msg) : ?>
         <p><?= $msg ?></p>

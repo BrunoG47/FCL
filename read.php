@@ -94,8 +94,9 @@ $num_contacts = $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
                     <td><?= $contact['nif'] ?></td>
                     <td><?= $contact['created_at'] ?></td>
                     <td class="actions">
-                        <a href="update.php?n_cliente=<?= $contact['n_cliente'] ?>" class="edit"><i class="fas fa-pen fa-xs"></i></a>
-                        <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>" class="trash"><i class="fas fa-trash fa-xs"></i></a>
+                        <a href="create_ficha.php?n_cliente=<?= $contact['n_cliente'] ?>" class="add"><i style="color: black;" class="fas fa-paperclip fa-xs"></i></a>
+                        <a href="update.php?n_cliente=<?= $contact['n_cliente'] ?>" class="edit"><i style="color: black;" class="fas fa-user-edit fa-xs"></i></a>
+                        <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>" class="trash"><i style="color: black;" class="fas fa-trash fa-xs"></i></a>
                     </td>
                 </tr>
             <?php endforeach; ?>

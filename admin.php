@@ -123,8 +123,10 @@ $stmt->close();
 				<td style="text-align: center"><?php echo $dat['created_at']; ?></td>
 				<td style="width: 150px; text-align: center"><?php echo $dat['problema']; ?></td>
 				<td></td>
-				<td class="btt"><a href="edit.php?n_ficha=<?php echo $dat['n_ficha'];
-															echo $dat['estado'] ?>">Edit</a></td>
+				<td class="actions">
+					<a href="edit.php?n_ficha=<?php echo $dat['n_ficha'];
+												?>" class="ff"><i style="color: white;" class="fas fa-pen fa-xs"></i>Edit</a>
+				</td>
 			</tr>
 		<?php
 				}

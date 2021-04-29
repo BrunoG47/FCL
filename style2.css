@@ -119,7 +119,8 @@ body {
   text-align: right;
 }
 .read table tbody tr td.actions .edit,
-.read table tbody tr td.actions .trash {
+.read table tbody tr td.actions .trash,
+.read table tbody tr td.actions .add {
   display: inline-flex;
   text-align: right;
   text-decoration: none;
@@ -137,6 +138,12 @@ body {
 }
 .read table tbody tr td.actions .edit:hover {
   background-color: #319ca3;
+}
+.read table tbody tr td.actions .add {
+  background-color: #22cf1c;
+}
+.read table tbody tr td.actions .add:hover {
+  background-color: #16a111;
 }
 .update form {
   padding: 15px 0;
@@ -184,4 +191,12 @@ body {
 }
 .delete .yesno a:hover {
   background-color: #32a367;
+}
+.ff {
+  background-color: rgb(3, 44, 85);
+  color: white;
+  display: inline-flex;
+  text-align: right;
+  text-decoration: none;
+  padding: 5px 6px;
 }
