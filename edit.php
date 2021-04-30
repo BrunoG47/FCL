@@ -1,6 +1,15 @@
 <?php
-include "config.php"; // Using database connection file here
+include "functions.php";    // Using database connection file here
+$pdo = pdo_connect_mysql();
+$msg = '';
+
 if (isset($_GET['n_ficha'])) {
+    if (!empty($_POST)) {
+        $n_ficha = isset($_POST['n_ficha']) ? $_POST['n_ficha'] : NULL;
+        $estado = isset($_POST['estado']) ? $_POST['estado'] : '';
+        $nota = isset($_POST['nota']) ? $_POST['nota'] : '';
+        $stmt = $pdo->prepare 
+    }
     $n_ficha = $_GET['n_ficha']; // get id through query string
 }
 $qry = mysqli_query($link, "SELECT estado FROM fichas WHERE n_ficha = '$n_ficha'"); // select query

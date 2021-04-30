@@ -10,153 +10,129 @@ if ($_SESSION["role"] == 'U') {
 	header('Location: home.php');
 	exit;
 }
-$DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'test';
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-if (mysqli_connect_errno()) {
-	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
-}
-// We don't have the password or email info stored in sessions so instead we can get the results from the database.
-$stmt = $con->prepare('SELECT users.n_cliente, users.nome, fichas.n_ficha, fichas.estado, fichas.created_at FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente');
-// In this case we can use the account ID to get the account info.
+include 'functions.php';
+// Connect to MySQL database
+$pdo = pdo_connect_mysql();
+// Get the page via GET request (URL param: page), if non exists default the page to 1
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+// Number of records to show on each page
+$records_per_page = 5;
+// Prepare the SQL statement and get records from our contacts table, LIMIT will determine the page
+$stmt = $pdo->prepare('SELECT users.n_cliente, users.nome, fichas.n_ficha, fichas.estado, fichas.nota, fichas.created_at, fichas.problema FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente ORDER BY n_ficha LIMIT :current_page, :record_per_page');
+$stmt->bindValue(':current_page', ($page - 1) * $records_per_page, PDO::PARAM_INT);
+$stmt->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
 $stmt->execute();
-$stmt->bind_result($n_cliente, $nome, $n_ficha, $estado, $created_at);
-$stmt->fetch();
-$stmt->execute();
-$records = array();
-$result = $stmt->get_result();
-while ($data = $result->fetch_assoc()) {
-	$records[] = $data;
-}
-$stmt->close();
+// Fetch the records so we can display them in our template.
+$contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Get the total number of contacts, this is so we can determine whether there should be a next and previous button
+$num_contacts = $pdo->query('SELECT COUNT(*) FROM fichas')->fetchColumn();
 ?>
-<!DOCTYPE html>
-<html>
+<?= template_header('SosToners-Fichas') ?>
 
-<head>
-	<meta charset="utf-8">
-	<title>SosToners-Admin</title>
-	<link href="style1.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<link href="style2.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-</head>
+<div class="content read">
+	<a href="create_ficha.php" class="create-contact">Criar Ficha</a>
+	<h2 style="color: #4a536e;">Fichas</h2>
+	<table id="myTable">
+		<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Procurar">
+		<style>
+			#myTable {
+				border-collapse: collapse;
+				width: 100%;
+				border: 1px solid #ddd;
+				font-size: 18px;
+			}
 
-<body class="loggedin">
-	<nav style="background-color: #2f3947;" class="navtop">
-		<div>
-			<a href="admin.php"><i class="fas fa-home"></i>Página Inicial</a>
-			<a href="read.php"><i style="margin-left: 490px" class="fas fa-address-book"></i>Clientes</a>
-			<a href="logout.php"><i style="margin-left: 50px" class="fas fa-sign-out-alt"></i>Desconectar</a>
-		</div>
-	</nav>
-	<div class="content read">
-		<table id="myTable">
-			<style>
-				#myTable {
-					border-collapse: collapse;
-					width: 100%;
-					border: 1px solid #ddd;
-					font-size: 18px;
-				}
+			#myTable th,
+			#myTable td {
+				text-align: left;
+				padding: 12px;
+			}
 
-				#myTable th,
-				#myTable td {
-					text-align: left;
-					padding: 12px;
-				}
+			#myTable tr {
+				border-bottom: 1px solid #ddd;
+			}
 
-				#myTable tr {
-					border-bottom: 1px solid #ddd;
-				}
+			#myTable tr.header,
+			#myTable tr:hover {
+				background-color: #f1f1f1;
+			}
 
-				#myTable tr.header,
-				#myTable tr:hover {
-					background-color: #f1f1f1;
-				}
+			table {
+				font-family: arial, sans-serif;
+				border-collapse: collapse;
+				width: 100%;
+			}
 
-				table {
-					font-family: arial, sans-serif;
-					border-collapse: collapse;
-					width: 100%;
-				}
+			td,
+			th {
+				border: 2px solid #dddddd;
+				text-align: center;
+				padding: 8px;
+			}
 
-				td,
-				th {
-					border: 2px solid #dddddd;
-					text-align: center;
-					padding: 8px;
-				}
-
-				tr:nth-child(even) {
-					background-color: #dddddd;
-				}
-			</style>
-			<a href="create.php" class="create-contact">Criar Ficha</a>
-			<h2 style="color: #4a536e; font-weight: bold; font-size: 22px;">Fichas</h2>
-			<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Procurar">
+			tr:nth-child(even) {
+				background-color: #dddddd;
+			}
+		</style>
+		<thead>
 			<tr>
-				<th style="text-align: center">Nº Cliente:</th>
-				<th style="text-align: center">Nome Cliente:</th>
-				<th style="text-align: center">Nº Ficha:</th>
-				<th style="text-align: center">Estado:</th>
-				<th style="text-align: center">Nota:</th>
-				<th style="text-align: center">Data de Criação:</th>
-				<th style="text-align: center">Problema inicial:</th>
-				<th style="text-align: center">Data de Estado:</th>
+				<th>Nº Cliente:</th>
+				<th>Nome Cliente:</th>
+				<th>Nº Ficha:</th>
+				<th>Estado:</th>
+				<th>Nota:</th>
+				<th>Data de Criação</th>
+				<th>Problema inicial:</th>
 			</tr>
-			<tr>
-				<?php
-				include "config.php";
-				$rec = mysqli_query($link, 'SELECT users.n_cliente, users.nome, fichas.n_ficha, fichas.estado, fichas.nota, fichas.created_at, fichas.problema FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente');
-				while ($dat = mysqli_fetch_array($rec)) {
-				?>
-			<tr>
-				<td style="height: 20px; width: 50px; text-align: center"><?php echo $dat['n_cliente']; ?></td>
-				<td style="text-align: center"><?php echo $dat['nome']; ?></td>
-				<td style="text-align: center"><?php echo $dat['n_ficha']; ?></td>
-				<td style="width: 200px; text-align: center"><?php echo $dat['estado']; ?></td>
-				<td style="width: 150px; text-align: center"><?php echo $dat['nota']; ?></td>
-				<td style="text-align: center"><?php echo $dat['created_at']; ?></td>
-				<td style="width: 150px; text-align: center"><?php echo $dat['problema']; ?></td>
-				<td></td>
-				<td class="actions">
-					<a href="edit.php?n_ficha=<?php echo $dat['n_ficha'];
-												?>" class="ff"><i style="color: white;" class="fas fa-pen fa-xs"></i>Edit</a>
-				</td>
-			</tr>
-		<?php
-				}
-		?>
-		</table>
-		<script>
-			function myFunction() {
-				var input, filter, table, tr, td, i;
-				input = document.getElementById("myInput");
-				filter = input.value.toUpperCase();
-				table = document.getElementById("myTable");
-				tr = table.getElementsByTagName("tr");
-				for (i = 0; i < tr.length; i++) {
-					td = tr[i].getElementsByTagName("td")[0]; // for column one
-					td1 = tr[i].getElementsByTagName("td")[1];
-					td2 = tr[i].getElementsByTagName("td")[2];
-					td3 = tr[i].getElementsByTagName("td")[3]; // for column two
-					td4 = tr[i].getElementsByTagName("td")[4];
-					td6 = tr[i].getElementsByTagName("td")[6];
-					if (td) {
-						if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) || (td1.innerHTML.toUpperCase().indexOf(filter) > -1) || (td2.innerHTML.toUpperCase().indexOf(filter) > -1) || (td3.innerHTML.toUpperCase().indexOf(filter) > -1) || (td4.innerHTML.toUpperCase().indexOf(filter) > -1) || (td6.innerHTML.toUpperCase().indexOf(filter) > -1)) {
-							tr[i].style.display = "";
-						} else {
-							tr[i].style.display = "none";
-						}
+		</thead>
+		<tbody>
+			<?php foreach ($contacts as $contact) : ?>
+				<tr>
+					<td><?= $contact['n_cliente'] ?></td>
+					<td><?= $contact['nome'] ?></td>
+					<td><?= $contact['n_ficha'] ?></td>
+					<td><?= $contact['estado'] ?></td>
+					<td><?= $contact['nota'] ?></td>
+					<td><?= $contact['created_at'] ?></td>
+					<td><?= $contact['problema'] ?></td>
+					<td class="actions">
+						<a href="edit.php?n_ficha=<?= $contact['n_ficha'] ?>" class="add"><i style="color: black;" class="fas fa-pen fa-xs"></i></a>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	<script>
+		function myFunction() {
+			var input, filter, table, tr, td, i;
+			input = document.getElementById("myInput");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("myTable");
+			tr = table.getElementsByTagName("tr");
+			for (i = 0; i < tr.length; i++) {
+				td = tr[i].getElementsByTagName("td")[0]; // for column one
+				td1 = tr[i].getElementsByTagName("td")[1];
+				td2 = tr[i].getElementsByTagName("td")[2];
+				td3 = tr[i].getElementsByTagName("td")[3]; // for column two
+				td4 = tr[i].getElementsByTagName("td")[4];
+				if (td) {
+					if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) || (td1.innerHTML.toUpperCase().indexOf(filter) > -1) || (td2.innerHTML.toUpperCase().indexOf(filter) > -1) || (td3.innerHTML.toUpperCase().indexOf(filter) > -1) || (td4.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+						tr[i].style.display = "";
+					} else {
+						tr[i].style.display = "none";
 					}
 				}
 			}
-		</script>
+		}
+	</script>
+	<div class="pagination">
+		<?php if ($page > 1) : ?>
+			<a href="read.php?page=<?= $page - 1 ?>"><i class="fas fa-angle-double-left fa-sm"></i></a>
+		<?php endif; ?>
+		<?php if ($page * $records_per_page < $num_contacts) : ?>
+			<a href="read.php?page=<?= $page + 1 ?>"><i class="fas fa-angle-double-right fa-sm"></i></a>
+		<?php endif; ?>
 	</div>
-</body>
+</div>
 
-</html>
+<?= template_footer() ?>
