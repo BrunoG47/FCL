@@ -30,9 +30,9 @@ if (isset($_GET['n_ficha'])) {
     <h2>Editar Ficha #<?= $contact['n_ficha'] ?></h2>
     <form action="edit.php?n_ficha=<?= $contact['n_ficha'] ?>" method="post">
         <label for="n_ficha">Número Ficha</label>
-        <label for="estado">Estado</label>
+        <label for="estado" style="margin-left: 40px;">Estado</label>
         <input type="text" name="n_ficha" placeholder="Número Ficha" value="<?= $contact['n_ficha'] ?>" id="n_ficha" readonly>
-        <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" Required>
+        <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="margin-left: 40px;" autocomplete="off" Required>
             <option <?= $contact['estado'] == 'Para diagnóstico' ? 'selected="selected"' : ''; ?> value="Para diagnóstico">Para Diagnóstico</option>
             <option <?= $contact['estado'] == 'Em Diagnóstico' ? 'selected="selected"' : ''; ?> value="Em Diagnóstico">Em Diagnóstico</option>
             <option <?= $contact['estado'] == 'Em testes' ? 'selected="selected"' : ''; ?> value="Em testes">Em testes</option>
@@ -54,7 +54,7 @@ if (isset($_GET['n_ficha'])) {
         </script>
         <label for="nota">Nota</label>
         <input type="text" name="nota" placeholder="Nota Ficha" value="<?= $contact['nota'] ?>" id="nota" style="margin-left: -425px; margin-top: 40px;" autocomplete="off">
-        <input type="submit" value="Editar" style="margin-top: 30px;">
+        <input type="submit" value="Editar" style="margin-top: 30px; margin-left: 40px">
     </form>
     <?php if ($msg) : ?>
         <p><?= $msg ?></p>

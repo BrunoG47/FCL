@@ -127,10 +127,10 @@ $num_contacts = $pdo->query('SELECT COUNT(*) FROM fichas')->fetchColumn();
 	</script>
 	<div class="pagination">
 		<?php if ($page > 1) : ?>
-			<a href="read.php?page=<?= $page - 1 ?>"><i class="fas fa-angle-double-left fa-sm"></i></a>
+			<a href="admin.php?page=<?= $page - 1 ?>"><i class="fas fa-angle-double-left fa-sm"></i></a>
 		<?php endif; ?>
 		<?php if ($page * $records_per_page < $num_contacts) : ?>
-			<a href="read.php?page=<?= $page + 1 ?>"><i class="fas fa-angle-double-right fa-sm"></i></a>
+			<a href="admin.php?page=<?= $page + 1 ?>"><i class="fas fa-angle-double-right fa-sm"></i></a>
 		<?php endif; ?>
 	</div>
 </div>
