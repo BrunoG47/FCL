@@ -17,8 +17,9 @@ if (isset($_GET['n_cliente'])) {
             // User clicked the "Yes" button, delete record
             $stmt = $pdo->prepare('DELETE FROM users WHERE n_cliente = ?');
             $stmt->execute([$_GET['n_cliente']]);
-            $msg = 'Cliente Eliminado!';
-        } else {
+            $msg = 'Cliente Eliminado!'; ?>
+            <meta http-equiv="refresh" content="0.5;url=read.php">
+<?php } else {
             // User clicked the "No" button, redirect them back to the read page
             header('Location: read.php');
             exit;

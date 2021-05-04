@@ -28,16 +28,16 @@ if (!empty($_POST)) {
     <form action="create_ficha.php" method="post">
         <label for="n_cliente">Número Cliente</label>
         <label for="n_ficha">Número Ficha</label>
-        <input type="text" name="n_cliente" placeholder="26" value="auto" id="n_cliente" readonly> <!-- Vai buscar n_cliente que selecionou -->
-        <input type="text" name="n_ficha" placeholder="Nº Ficha" value="auto" id="n_ficha" readonly> <!-- Auto-incrementa n_ficha -->
+        <input type="text" name="n_cliente" placeholder="26" value="auto" id="n_cliente" autocomplete="off" readonly> <!-- Vai buscar n_cliente que selecionou -->
+        <input type="text" name="n_ficha" placeholder="Nº Ficha" value="auto" id="n_ficha" autocomplete="off" readonly> <!-- Auto-incrementa n_ficha -->
         <label for="nome">Nome cliente</label>
         <label for="problema">Problema inicial</label>
-        <input type="text" name="nome" placeholder="Nome cliente" id="nome"> <!-- Vai buscar come do cliente que selecionou -->
-        <input type="text" name="problema" placeholder="Problema Inicial" id="problema">
+        <input type="text" name="nome" placeholder="Nome cliente" id="nome" autocomplete="off"> <!-- Vai buscar come do cliente que selecionou -->
+        <input type="text" name="problema" placeholder="Problema Inicial" id="problema" autocomplete="off">
         <label for="estado">Estado</label>
         <label for="nota">Nota</label>
-        <input type="text" name="estado" placeholder="Estado Ficha" id="estado">
-        <input type="text" name="nota" placeholder="Nota Ficha" id="nota">
+        <input type="text" name="estado" placeholder="Estado Ficha" id="estado" autocomplete="off">
+        <input type="text" name="nota" placeholder="Nota Ficha" id="nota" autocomplete="off">
         <label for="created_at">Data de Criação</label>
         <input style="margin-right: 200px;" type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i') ?>" id="created_at">
         <input type="submit" value="Criar Ficha">

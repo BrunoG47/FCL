@@ -18,8 +18,9 @@ if (isset($_GET['n_cliente'])) {
         // Update the record
         $stmt = $pdo->prepare('UPDATE users SET n_cliente = ?, email = ?, nome = ?, telefone = ?, nif = ?, morada = ?, codigo = ?, role = ?, created_at = ? WHERE n_cliente = ?');
         $stmt->execute([$n_cliente, $email, $nome, $telefone, $nif, $morada, $codigo, $role, $created_at, $_GET['n_cliente']]);
-        $msg = 'Edição Bem Sucedida!';
-    }
+        $msg = 'Edição Bem Sucedida!'; ?>
+        <meta http-equiv="refresh" content="0.5;url=read.php">
+<?php }
     // Get the contact from the contacts table
     $stmt = $pdo->prepare('SELECT * FROM users WHERE n_cliente = ?');
     $stmt->execute([$_GET['n_cliente']]);
@@ -38,19 +39,19 @@ if (isset($_GET['n_cliente'])) {
     <form action="update.php?n_cliente=<?= $contact['n_cliente'] ?>" method="post">
         <label for="n_cliente">Número Cliente</label>
         <label for="nome">Nome</label>
-        <input type="text" name="n_cliente" placeholder="26" value="<?= $contact['n_cliente'] ?>" id="n_cliente" readonly>
-        <input type="text" name="nome" placeholder="Nome cliente" value="<?= $contact['nome'] ?>" id="nome">
+        <input type="text" name="n_cliente" placeholder="26" value="<?= $contact['n_cliente'] ?>" id="n_cliente" autocomplete="off" readonly>
+        <input type="text" name="nome" placeholder="Nome cliente" value="<?= $contact['nome'] ?>" id="nome" autocomplete="off">
         <label for="email">Email</label>
         <label for="telefone">Telefone</label>
-        <input type="text" name="email" placeholder="Email cliente" value="<?= $contact['email'] ?>" id="email">
-        <input type="text" name="telefone" placeholder="Contacto cliente" value="<?= $contact['telefone'] ?>" id="telefone">
+        <input type="text" name="email" placeholder="Email cliente" value="<?= $contact['email'] ?>" id="email" autocomplete="off">
+        <input type="text" name="telefone" placeholder="Contacto cliente" value="<?= $contact['telefone'] ?>" id="telefone" autocomplete="off">
         <label for="nif">Nif</label>
         <label for="morada">Morada</label>
-        <input type="text" name="nif" placeholder="Nif cliente" value="<?= $contact['nif'] ?>" id="title">
-        <input type="text" name="morada" placeholder="Morada cliente" value="<?= $contact['morada'] ?>" id="morada">
+        <input type="text" name="nif" placeholder="Nif cliente" value="<?= $contact['nif'] ?>" id="nif" autocomplete="off">
+        <input type="text" name="morada" placeholder="Morada cliente" value="<?= $contact['morada'] ?>" id="morada" autocomplete="off">
         <label for="codigo">Cógido</label>
         <label for="created_at">Data de Criação</label>
-        <input type="text" name="codigo" placeholder="Código Postal cliente" value="<?= $contact['codigo'] ?>" id="codigo">
+        <input type="text" name="codigo" placeholder="Código Postal cliente" value="<?= $contact['codigo'] ?>" id="codigo" autocomplete="off">
         <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i', strtotime($contact['created_at'])) ?>" id="created_at">
         <input type="submit" value="Editar">
     </form>

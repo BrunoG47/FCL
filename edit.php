@@ -8,59 +8,56 @@ if (isset($_GET['n_ficha'])) {
         $n_ficha = isset($_POST['n_ficha']) ? $_POST['n_ficha'] : NULL;
         $estado = isset($_POST['estado']) ? $_POST['estado'] : '';
         $nota = isset($_POST['nota']) ? $_POST['nota'] : '';
-        $stmt = $pdo->prepare 
-    }
-    $n_ficha = $_GET['n_ficha']; // get id through query string
-}
-$qry = mysqli_query($link, "SELECT estado FROM fichas WHERE n_ficha = '$n_ficha'"); // select query
-$dat = mysqli_fetch_array($qry); // fetch data
 
-if (isset($_POST['update'])) // when click on Update button
-{
-    $nota = $_POST['Nota'];
-    $estado = $_POST['Estado'];
-    $edit = mysqli_query($link, "UPDATE fichas set estado='$estado', nota='$nota' where n_ficha = '$n_ficha'");
-    if ($edit) {
-        mysqli_close($link); // Close connection
-        header("location:admin.php"); // redirects to all records page
-        exit;
-    } else {
-        echo mysqli_error($error);
+        $stmt = $pdo->prepare('UPDATE fichas SET n_ficha = ?, estado = ?, nota = ? where n_ficha = ?');
+        $stmt->execute([$n_ficha, $estado, $nota, $_GET['n_ficha']]);
+        $msg = 'Edição bem sucedida!'; ?>
+        <meta http-equiv="refresh" content="0.5;url=admin.php">
+<?php }
+    $stmt = $pdo->prepare('SELECT n_ficha, estado, nota FROM fichas WHERE n_ficha = ?');
+    $stmt->execute([$_GET['n_ficha']]);
+    $contact = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$contact) {
+        exit('Ficha não tem número de ficha');
     }
+} else {
+    exit('Nenhuma ficha selecionada!');
 }
 ?>
-<!DOCTYPE html>
-<html>
+<?= template_header('SosToners-Editar Ficha') ?>
 
-<head>
-    <meta charset="utf-8">
-    <title>SosToners-Editar Ficha</title>
-    <link href="style1.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-
-<body class="loggedin">
-    <nav class="navtop">
-        <div>
-            <h2 style="color: mintcream; margin-top:7px">Editar dados</a>
-        </div>
-    </nav>
-    <form method="POST" style="margin-top: 2rem; margin-left: 14rem">
-        <select name="Estado" method="post" placeholder="Insira estado" id="selectBoxId" Required>
-            <option value="Para diagnóstico">Para Diagnóstico</option>
-            <option value="Em Diagnóstico">Em Diagnóstico</option>
-            <option value="Em testes">Em testes</option>
-            <option value="Aguarda aprovação">Aguarda aprovação</option>
-            <option value="Aguarda peças">Aguarda peças</option>
-            <option value="Em laboratório">Em laboratório</option>
-            <option value="Em reparação">Em reparação</option>
-            <option value="Em controlo">Em controlo</option>
-            <option value="Pronto para entrega">Pronto para entrega</option>
-            <option value="Entregue">Entregue</option>
-            <option value="Sem reparação">Sem reparação</option>
-            <option value="Para devolução">Para devolução</option>
+<div class="content update">
+    <h2>Editar Ficha #<?= $contact['n_ficha'] ?></h2>
+    <form action="edit.php?n_ficha=<?= $contact['n_ficha'] ?>" method="post">
+        <label for="n_ficha">Número Ficha</label>
+        <label for="estado">Estado</label>
+        <input type="text" name="n_ficha" placeholder="Número Ficha" value="<?= $contact['n_ficha'] ?>" id="n_ficha" readonly>
+        <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" Required>
+            <option <?= $contact['estado'] == 'Para diagnóstico' ? 'selected="selected"' : ''; ?> value="Para diagnóstico">Para Diagnóstico</option>
+            <option <?= $contact['estado'] == 'Em Diagnóstico' ? 'selected="selected"' : ''; ?> value="Em Diagnóstico">Em Diagnóstico</option>
+            <option <?= $contact['estado'] == 'Em testes' ? 'selected="selected"' : ''; ?> value="Em testes">Em testes</option>
+            <option <?= $contact['estado'] == 'Aguarda aprovação' ? 'selected="selected"' : ''; ?> value="Aguarda aprovação">Aguarda aprovação</option>
+            <option <?= $contact['estado'] == 'Aguarda peças' ? 'selected="selected"' : ''; ?> value="Aguarda peças">Aguarda peças</option>
+            <option <?= $contact['estado'] == 'Em laboratório' ? 'selected="selected"' : ''; ?> value="Em laboratório">Em laboratório</option>
+            <option <?= $contact['estado'] == 'Em reparação' ? 'selected="selected"' : ''; ?> value="Em reparação">Em reparação</option>
+            <option <?= $contact['estado'] == 'Em controlo' ? 'selected="selected"' : ''; ?> value="Em controlo">Em controlo</option>
+            <option <?= $contact['estado'] == 'Pronto para entrega' ? 'selected="selected"' : ''; ?> value="Pronto para entrega">Pronto para entrega</option>
+            <option <?= $contact['estado'] == 'Entregue' ? 'selected="selected"' : ''; ?> value="Entregue">Entregue</option>
+            <option <?= $contact['estado'] == 'Sem reparação' ? 'selected="selected"' : ''; ?> value="Sem reparação">Sem reparação</option>
+            <option <?= $contact['estado'] == 'Para devolução' ? 'selected="selected"' : ''; ?> value="Para devolução">Para devolução</option>
         </select>
-        <input type="text" name="Nota" method="post">
-        <input type="submit" name="update" value="Editar">
+        <script type="text/javascript">
+            var test = "<?= $estado; ?>";
+            if (test != '' && parseInt(test)) {
+                document.getElementById('selectBoxId').selectedIndex = test;
+            }
+        </script>
+        <label for="nota">Nota</label>
+        <input type="text" name="nota" placeholder="Nota Ficha" value="<?= $contact['nota'] ?>" id="nota" style="margin-left: -425px; margin-top: 40px;" autocomplete="off">
+        <input type="submit" value="Editar" style="margin-top: 30px;">
     </form>
+    <?php if ($msg) : ?>
+        <p><?= $msg ?></p>
+    <?php endif; ?>
+</div>
+<?= template_footer() ?>

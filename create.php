@@ -21,8 +21,9 @@ if (!empty($_POST)) {
     $stmt = $pdo->prepare('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
     $stmt->execute([$n_cliente, $email, $param_password, $nome, $telefone, $nif, $morada, $codigo, $role, $created_at]);
     // Output message
-    $msg = 'Criação Concluida!';
-}
+    $msg = 'Criação Concluida!'; ?>
+    <meta http-equiv="refresh" content="0.5;url=read.php">
+<?php }
 ?>
 <?= template_header('SosToners-Criar') ?>
 
@@ -31,19 +32,19 @@ if (!empty($_POST)) {
     <form action="create.php" method="post">
         <label for="n_cliente">Número Cliente</label>
         <label for="nome">Nome</label>
-        <input type="text" name="n_cliente" placeholder="26" value="auto" id="n_cliente" readonly>
-        <input type="text" name="nome" placeholder="Nome cliente" id="nome">
+        <input type="text" name="n_cliente" placeholder="26" value="auto" id="n_cliente" autocomplete="off" readonly>
+        <input type="text" name="nome" placeholder="Nome cliente" id="nome" autocomplete="off">
         <label for="email">Email</label>
         <label for="telefone">Telefone</label>
-        <input type="text" name="email" placeholder="Email cliente" id="email">
-        <input type="text" name="telefone" placeholder="Contacto cliente" id="telefone">
+        <input type="text" name="email" placeholder="Email cliente" id="email" autocomplete="off">
+        <input type="text" name="telefone" placeholder="Contacto cliente" id="telefone" autocomplete="off">
         <label for="nif">Nif</label>
         <label for="morada">Morada</label>
-        <input type="text" name="nif" placeholder="Nif cliente" id="title">
-        <input type="text" name="morada" placeholder="Morada cliente" id="morada">
+        <input type="text" name="nif" placeholder="Nif cliente" id="title" autocomplete="off">
+        <input type="text" name="morada" placeholder="Morada cliente" id="morada" autocomplete="off">
         <label for="codigo">Cógido</label>
         <label for="created_at">Data de Criação</label>
-        <input type="text" name="codigo" placeholder="Código Postal cliente" id="codigo">
+        <input type="text" name="codigo" placeholder="Código Postal cliente" id="codigo" autocomplete="off">
         <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i') ?>" id="created_at">
         <input type="submit" value="Criar Cliente">
     </form>
