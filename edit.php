@@ -25,7 +25,6 @@ if (isset($_GET['n_ficha'])) {
 }
 ?>
 <?= template_header('SosToners-Editar Ficha') ?>
-
 <div class="content update">
     <h2>Editar Ficha #<?= $contact['n_ficha'] ?></h2>
     <form action="edit.php?n_ficha=<?= $contact['n_ficha'] ?>" method="post">
@@ -33,8 +32,8 @@ if (isset($_GET['n_ficha'])) {
         <label for="estado" style="margin-left: 40px;">Estado</label>
         <input type="text" name="n_ficha" placeholder="Número Ficha" value="<?= $contact['n_ficha'] ?>" id="n_ficha" readonly>
         <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="margin-left: 40px;" autocomplete="off" Required>
-            <option <?= $contact['estado'] == 'Para diagnóstico' ? 'selected="selected"' : ''; ?> value="Para diagnóstico">Para Diagnóstico</option>
-            <option <?= $contact['estado'] == 'Em Diagnóstico' ? 'selected="selected"' : ''; ?> value="Em Diagnóstico">Em Diagnóstico</option>
+            <option <?= $contact['estado'] == 'Para diagnóstico' ? 'selected="selected"' : ''; ?> value="Para diagnóstico">Para diagnóstico</option>
+            <option <?= $contact['estado'] == 'Em diagnóstico' ? 'selected="selected"' : ''; ?> value="Em diagnóstico">Em diagnóstico</option>
             <option <?= $contact['estado'] == 'Em testes' ? 'selected="selected"' : ''; ?> value="Em testes">Em testes</option>
             <option <?= $contact['estado'] == 'Aguarda aprovação' ? 'selected="selected"' : ''; ?> value="Aguarda aprovação">Aguarda aprovação</option>
             <option <?= $contact['estado'] == 'Aguarda peças' ? 'selected="selected"' : ''; ?> value="Aguarda peças">Aguarda peças</option>
