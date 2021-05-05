@@ -18,7 +18,7 @@ $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] :
 // Number of records to show on each page
 $records_per_page = 5;
 // Prepare the SQL statement and get records from our contacts table, LIMIT will determine the page
-$stmt = $pdo->prepare('SELECT * FROM users ORDER BY n_cliente LIMIT :current_page, :record_per_page');
+$stmt = $pdo->prepare('SELECT * FROM users WHERE n_cliente != "2259" AND n_cliente !="2258" ORDER BY n_cliente LIMIT :current_page, :record_per_page');
 $stmt->bindValue(':current_page', ($page - 1) * $records_per_page, PDO::PARAM_INT);
 $stmt->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
 $stmt->execute();
@@ -94,7 +94,7 @@ $num_contacts = $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
                     <td><?= $contact['nif'] ?></td>
                     <td><?= $contact['created_at'] ?></td>
                     <td class="actions">
-                        <a href="create_ficha.php?n_cliente=<?= $contact['n_cliente'] ?>" class="add"><i style="color: black;" class="fas fa-paperclip fa-xs"></i></a>
+                        <a href="create_ficha1.php?n_cliente=<?= $contact['n_cliente'] ?>" class="add"><i style="color: black;" class="fas fa-paperclip fa-xs"></i></a>
                         <a href="update.php?n_cliente=<?= $contact['n_cliente'] ?>" class="edit"><i style="color: black;" class="fas fa-user-edit fa-xs"></i></a>
                         <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>" class="trash"><i style="color: black;" class="fas fa-trash fa-xs"></i></a>
                     </td>

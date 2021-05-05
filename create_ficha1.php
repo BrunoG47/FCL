@@ -28,7 +28,7 @@ if (!empty($_POST)) {
     <form action="create_ficha.php" method="post">
         <label for="n_cliente">Número Cliente</label>
         <label for="n_ficha">Número Ficha</label>
-        <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" value="<?php $n_cliente ?>" autocomplete="off" required>
+        <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" value="<?= $_GET['n_cliente'] ?>" autocomplete="off" required readonly>
         <input type="text" name="n_ficha" placeholder="Número Ficha" value="automático" id="n_ficha" autocomplete="off" readonly>
         <label for="estado">Estado</label>
         <label for="nota">Nota</label>
