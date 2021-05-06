@@ -32,8 +32,22 @@ if (!empty($_POST)) {
         <input type="text" name="n_ficha" placeholder="Número Ficha" value="automático" id="n_ficha" autocomplete="off" readonly>
         <label for="estado">Estado</label>
         <label for="nota">Nota</label>
-        <input type="text" name="estado" placeholder="Estado" id="estado" autocomplete="off">
-        <input type="text" name="nota" placeholder="Nota" id="nota" autocomplete="off">
+        <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off" Required>
+            <option value="" disabled selected hidden>Selecione o estado da ficha</option>
+            <option value="Para diagnóstico">Para Diagnóstico</option>
+            <option value="Em diagnóstico">Em Diagnóstico</option>
+            <option value="Em testes">Em testes</option>
+            <option value="Aguarda aprovação">Aguarda aprovação</option>
+            <option value="Aguarda peças">Aguarda peças</option>
+            <option value="Em laboratório">Em laboratório</option>
+            <option value="Em reparação">Em reparação</option>
+            <option value="Em controlo">Em controlo</option>
+            <option value="Pronto para entrega">Pronto para entrega</option>
+            <option value="Entregue">Entregue</option>
+            <option value="Sem reparação">Sem reparação</option>
+            <option value="Para devolução">Para devolução</option>
+        </select>
+        <input type="text" name="nota" placeholder="Nota" style="margin-left: 25px" id="nota" autocomplete="off">
         <label for="problema">Problema Inicial</label>
         <label for="created_at">Data de Criação</label>
         <input type="text" name="problema" placeholder="Problema Inicial" id="problema" autocomplete="off">

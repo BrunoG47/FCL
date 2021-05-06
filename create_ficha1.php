@@ -1,6 +1,6 @@
 <!--
     Criar ficha se for selecionado um cliente
---> 
+-->
 <?php
 include 'functions.php';
 $pdo = pdo_connect_mysql();
@@ -38,7 +38,7 @@ if (!empty($_POST)) {
         <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off" Required>
             <option value="" disabled selected hidden>Selecione o estado da ficha</option>
             <option value="Para diagnóstico">Para Diagnóstico</option>
-            <option value="Em Diagnóstico">Em Diagnóstico</option>
+            <option value="Em diagnóstico">Em Diagnóstico</option>
             <option value="Em testes">Em testes</option>
             <option value="Aguarda aprovação">Aguarda aprovação</option>
             <option value="Aguarda peças">Aguarda peças</option>

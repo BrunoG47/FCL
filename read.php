@@ -18,7 +18,7 @@ $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] :
 // Number of records to show on each page
 $records_per_page = 5;
 // Prepare the SQL statement and get records from our contacts table, LIMIT will determine the page
-$stmt = $pdo->prepare('SELECT * FROM users WHERE n_cliente != "2259" AND n_cliente !="2258" ORDER BY n_cliente LIMIT :current_page, :record_per_page');
+$stmt = $pdo->prepare('SELECT * FROM users WHERE n_cliente != "2259" ORDER BY n_cliente LIMIT :current_page, :record_per_page');
 $stmt->bindValue(':current_page', ($page - 1) * $records_per_page, PDO::PARAM_INT);
 $stmt->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
 $stmt->execute();
