@@ -6,6 +6,7 @@ $msg = '';
 if (!empty($_POST)) {
     // Post data not empty insert a new record
     // Set-up the variables that are going to be inserted, we must check if the POST variables exist if not we can default them to blank
+    $cliente = isset($_POST['cliente']) ? $_POST['cliente'] : '';
     $n_cliente = isset($_POST['n_cliente']) ? $_POST['n_cliente'] : '';
     // Check if POST variable "name" exists, if not default the value to blank, basically the same for all variables
     $n_ficha = isset($_POST['n_ficha']) ? $_POST['n_ficha'] : '';
@@ -14,11 +15,15 @@ if (!empty($_POST)) {
     $problema = isset($_POST['problema']) ? $_POST['problema'] : '';
     $created_at = isset($_POST['created_at']) ? $_POST['created_at'] : date('Y-m-d H:i:s');
     // Insert new record into the contacts table
+    $query = $pdo->prepare('SELECT * FROM users WHERE CONCAT(n_cliente, email, nome, telefone, nif) LIKE ?');
+    $query->execute(['%'.$cliente.'%']);
+
+    $contacts = $query->fetchAll(PDO::FETCH_ASSOC);
     $stmt = $pdo->prepare('INSERT INTO fichas VALUES (?, ?, ?, ?, ?, ?)');
     $stmt->execute([$n_cliente, $n_ficha, $estado, $nota, $problema, $created_at]);
     // Output message
     $msg = 'Criação Concluida!'; ?>
-    <meta http-equiv="refresh" content="0.5;url=admin.php">
+    <!--<meta http-equiv="refresh" content="0.5;url=admin.php">-->
 <?php }
 ?>
 <?= template_header('SosToners-Criar') ?>
@@ -26,13 +31,15 @@ if (!empty($_POST)) {
 <div class="content update">
     <h2>Criar Ficha</h2>
     <form action="create_ficha.php" method="post">
+    <input type="text" id="myInput" placeholder="Procurar" name="cliente" id="cliente">
+    <input type="submit" value="Procurar cliente">
         <label for="n_cliente">Número Cliente</label>
         <label for="n_ficha">Número Ficha</label>
-        <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" value="<?php $n_cliente ?>" autocomplete="off" required>
+        <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" value="<?php $n_cliente ?>" autocomplete="off">
         <input type="text" name="n_ficha" placeholder="Número Ficha" value="automático" id="n_ficha" autocomplete="off" readonly>
         <label for="estado">Estado</label>
         <label for="nota">Nota</label>
-        <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off" Required>
+        <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off" >
             <option value="" disabled selected hidden>Selecione o estado da ficha</option>
             <option value="Para diagnóstico">Para Diagnóstico</option>
             <option value="Em diagnóstico">Em Diagnóstico</option>
@@ -47,6 +54,21 @@ if (!empty($_POST)) {
             <option value="Sem reparação">Sem reparação</option>
             <option value="Para devolução">Para devolução</option>
         </select>
+        <tbody>
+            <?php if(isset($contacts))
+            foreach ($contacts as $contact) : 
+            ?>
+                
+                <tr>
+                    <td><?= $contact['n_cliente'] ?></td>
+                    <td><?= $contact['email'] ?></td>
+                    <td><?= $contact['nome'] ?></td>
+                    <td><?= $contact['telefone'] ?></td>
+                    <td><?= $contact['nif'] ?></td>
+                    <br>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
         <input type="text" name="nota" placeholder="Nota" style="margin-left: 25px" id="nota" autocomplete="off">
         <label for="problema">Problema Inicial</label>
         <label for="created_at">Data de Criação</label>
