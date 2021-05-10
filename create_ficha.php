@@ -3,6 +3,22 @@ include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
 // Check if POST data is not empty
+if (!isset($_GET['n_cliente'])) {
+    echo '<script>';
+    echo 'window.onload=function() {';
+    echo 'document.getElementById("myButton").style.display = "none";';
+    echo 'document.getElementById("n_ficha").style.display = "none";';
+    echo 'document.getElementById("n_ficha1").style.display = "none";';
+    echo 'document.getElementById("n_cliente1").style.display = "none";';
+    echo 'document.getElementById("n_cliente").style.display = "none"; }';
+    echo '</script>';
+} else {
+    echo '<script>';
+    echo 'window.onload=function() {';
+    echo 'document.getElementById("teste").style.display = "none";';
+    echo 'document.getElementById("myInput").style.display = "none"; }';
+    echo '</script>';
+}
 if (!empty($_POST)) {
     // Post data not empty insert a new record
     // Set-up the variables that are going to be inserted, we must check if the POST variables exist if not we can default them to blank
@@ -18,10 +34,7 @@ if (!empty($_POST)) {
     $query = $pdo->prepare('SELECT * FROM users WHERE CONCAT(n_cliente, email, nome, telefone, nif) LIKE ?');
     $query->execute(['%' . $cliente . '%']);
     $contacts = $query->fetchAll(PDO::FETCH_ASSOC);
-    $stmt = $pdo->prepare('INSERT INTO fichas VALUES (?, ?, ?, ?, ?, ?)');
-    $stmt->execute([$n_cliente, $n_ficha, $estado, $nota, $problema, $created_at]);
-    // Output message
-    $msg = 'Criação Concluida!'; ?>
+?>
     <!--<meta http-equiv="refresh" content="0.5;url=admin.php">-->
 <?php }
 ?>
@@ -31,7 +44,7 @@ if (!empty($_POST)) {
     <h2>Criar Ficha</h2>
     <form action="create_ficha.php" method="post">
         <input type="text" id="myInput" placeholder="Procurar" name="cliente" id="cliente">
-        <input type="submit" value="Procurar cliente">
+        <input type="submit" id="teste" value="Procurar cliente">
         <?php if (isset($contacts)) { ?>
             <table id="myTable">
                 <style>
@@ -101,12 +114,12 @@ if (!empty($_POST)) {
                 </tbody>
             </table>
         <?php } ?>
-        <label for="n_cliente">Número Cliente</label>
-        <label for="n_ficha">Número Ficha</label>
+        <label for="cliente" id="n_cliente1">Número Cliente</label>
+        <label for="n_ficha" id="n_ficha1">Número Ficha</label>
         <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" value="<?= $_GET['n_cliente'] ?>" autocomplete="off" required readonly>
         <input type="text" name="n_ficha" placeholder="Número Ficha" value="automático" id="n_ficha" autocomplete="off" readonly>
         <label for="estado">Estado</label>
-        <label for="nota">Nota</label>
+        <label for="problema">Problema Inicial</label>
         <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off">
             <option value="" disabled selected hidden>Selecione o estado da ficha</option>
             <option value="Para diagnóstico">Para Diagnóstico</option>
@@ -122,16 +135,26 @@ if (!empty($_POST)) {
             <option value="Sem reparação">Sem reparação</option>
             <option value="Para devolução">Para devolução</option>
         </select>
-        <input type="text" name="nota" placeholder="Nota" style="margin-left: 25px" id="nota" autocomplete="off">
-        <label for="problema">Problema Inicial</label>
+        <input type="text" name="problema" placeholder="Problema Inicial" id="problema" style=" margin-left: 25px;" autocomplete="off">
+        <label for="nota">Nota</label>
         <label for="created_at">Data de Criação</label>
-        <input type="text" name="problema" placeholder="Problema Inicial" id="problema" autocomplete="off">
+        <input type="text" name="nota" placeholder="Nota" id="nota" autocomplete="off">
         <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i') ?>" id="created_at">
-        <input type="submit" value="Criar Ficha">
+        <input type="submit" id="myButton" onclick="myFunction()" value="Criar Ficha">
     </form>
     <?php if ($msg) : ?>
         <p><?= $msg ?></p>
     <?php endif; ?>
 </div>
-
+<script>
+    function myFunction() {
+        location.replace("admin.php");
+        <?php
+        $stmt = $pdo->prepare('INSERT INTO fichas VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$n_cliente, $n_ficha, $estado, $nota, $problema, $created_at]);
+        // Output message
+        $msg = 'Criação Concluida!';
+        ?>
+    }
+</script>
 <?= template_footer() ?>
