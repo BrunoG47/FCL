@@ -28,7 +28,7 @@ if (!empty($_POST)) {
 
 <div class="content update">
     <h2>Criar Ficha</h2>
-    <form action="create_ficha.php" method="post">
+    <form action="create_ficha1.php" method="post">
         <label for="n_cliente">Número Cliente</label>
         <label for="n_ficha">Número Ficha</label>
         <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" value="<?= $_GET['n_cliente'] ?>" autocomplete="off" required readonly>
