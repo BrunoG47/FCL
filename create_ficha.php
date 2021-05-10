@@ -43,7 +43,7 @@ if (!empty($_POST)) {
 <div class="content update">
     <h2>Criar Ficha</h2>
     <form action="create_ficha.php" method="post">
-        <input type="text" id="myInput" placeholder="Procurar" name="cliente" id="cliente">
+        <input type="text" id="myInput" placeholder="Procurar" name="cliente" id="cliente" autocomplete="off">
         <input type="submit" id="teste" value="Procurar cliente">
         <?php if (isset($contacts)) { ?>
             <table id="myTable">
