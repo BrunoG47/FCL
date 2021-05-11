@@ -76,6 +76,7 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th>Telefone</th>
                 <th>NIF</th>
                 <th>Data de Criação</th>
+                <th>Criar Ficha/Editar/Eliminar</th>
             </tr>
         </thead>
         <tbody>
@@ -88,9 +89,9 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?= $contact['nif'] ?></td>
                     <td><?= $contact['created_at'] ?></td>
                     <td class="actions">
-                        <a href="create_ficha1.php?n_cliente=<?= $contact['n_cliente'] ?>" class="add"><i style="color: black;" class="fas fa-paperclip fa-xs"></i></a>
-                        <a href="update.php?n_cliente=<?= $contact['n_cliente'] ?>" class="edit"><i style="color: black;" class="fas fa-user-edit fa-xs"></i></a>
-                        <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>" class="trash"><i style="color: black;" class="fas fa-trash fa-xs"></i></a>
+                        <a href="create_ficha1.php?n_cliente=<?= $contact['n_cliente'] ?>" class="add"><i style="color: black; margin-left: 30px;" class="fas fa-paperclip fa-xs"></i></a>
+                        <a href="update.php?n_cliente=<?= $contact['n_cliente'] ?>" class="edit"><i style="color: black; margin-left: 30px" class="fas fa-user-edit fa-xs"></i></a>
+                        <a href="delete.php?n_cliente=<?= $contact['n_cliente'] ?>" class="trash"><i style="color: black; margin-left: 30px" class="fas fa-trash fa-xs"></i></a>
                     </td>
                 </tr>
             <?php endforeach; ?>

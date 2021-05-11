@@ -28,8 +28,8 @@ if (!empty($_POST)) {
     $query->execute(['%' . $cliente . '%']);
     $contacts = $query->fetchAll(PDO::FETCH_ASSOC);
     //<meta http-equiv="refresh" content="0.5;url=admin.php">-->
-    if(isset($_POST['n_cliente'])) {
-        ECHO "Teste";
+    if (isset($_POST['n_cliente'])) {
+        echo "Teste";
         $n_cliente = isset($_POST['n_cliente']) ? $_POST['n_cliente'] : '';
         // Check if POST variable "name" exists, if not default the value to blank, basically the same for all variables
         $n_ficha = isset($_POST['n_ficha']) ? $_POST['n_ficha'] : '';
@@ -42,16 +42,16 @@ if (!empty($_POST)) {
         // Output message
         $msg = 'Criação Concluida!';
         header('Location: admin.php');
-     }
- }
+    }
+}
 
 ?>
- <?= template_header('SosToners-Criar') ?>
+<?= template_header('SosToners-Criar') ?>
 
 <div class="content update">
     <h2>Criar Ficha</h2>
     <form action="create_ficha.php" method="POST">
-    <input type="text" id="myInput" placeholder="Procurar" name="cliente" id="cliente" autocomplete="off">
+        <input type="text" id="myInput" placeholder="Procurar" name="cliente" id="cliente" autocomplete="off">
         <input type="submit" id="teste" value="Procurar cliente">
     </form>
     <form action="create_ficha.php" method="post">
@@ -126,14 +126,14 @@ if (!empty($_POST)) {
         <?php } ?>
         <label for="cliente" id="n_cliente1">Número Cliente</label>
         <label for="n_ficha" id="n_ficha1">Número Ficha</label>
-        <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" autocomplete="off" value="<?= isset($_GET['n_cliente'] ) ? $_GET['n_cliente'] : "" ?>" readonly>
+        <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" autocomplete="off" value="<?= isset($_GET['n_cliente']) ? $_GET['n_cliente'] : "" ?>" readonly>
         <input type="text" name="n_ficha" placeholder="Número Ficha" value="automático" id="n_ficha" autocomplete="off" readonly>
         <label for="estado">Estado</label>
         <label for="problema">Problema Inicial</label>
         <select name="estado" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off">
             <option value="" disabled selected hidden>Selecione o estado da ficha</option>
-            <option value="Para diagnóstico">Para Diagnóstico</option>
-            <option value="Em diagnóstico">Em Diagnóstico</option>
+            <option value="Para diagnóstico">Para diagnóstico</option>
+            <option value="Em diagnóstico">Em diagnóstico</option>
             <option value="Em testes">Em testes</option>
             <option value="Aguarda aprovação">Aguarda aprovação</option>
             <option value="Aguarda peças">Aguarda peças</option>
@@ -151,7 +151,7 @@ if (!empty($_POST)) {
         <input type="text" name="nota" placeholder="Nota" id="nota" autocomplete="off">
         <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i') ?>" id="created_at">
         <input type="submit" id="myButton" value="Criar Ficha">
-        </form>
+    </form>
 
     <?php if ($msg) : ?>
         <p><?= $msg ?></p>

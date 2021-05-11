@@ -71,13 +71,14 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		</style>
 		<thead>
 			<tr>
-				<th>Nº Cliente:</th>
-				<th>Nome Cliente:</th>
-				<th>Nº Ficha:</th>
-				<th>Estado:</th>
-				<th>Nota:</th>
+				<th>Nº Cliente</th>
+				<th>Nome Cliente</th>
+				<th>Nº Ficha</th>
+				<th>Estado</th>
+				<th>Nota</th>
 				<th>Data de Criação</th>
-				<th>Problema inicial:</th>
+				<th>Problema inicial</th>
+				<th>Editar</th>
 			</tr>
 		</thead>
 		<tbody>
