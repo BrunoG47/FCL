@@ -1,20 +1,20 @@
 <?php
-// We need to use sessions, so you should always start sessions using the below code.
+
 session_start();
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
+ 
 $DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'test';
+$DATABASE_USER = 'tugaspot_tugaspot';
+$DATABASE_PASS = 'Pra@513285776@@@@';
+$DATABASE_NAME = 'tugaspot_fcl';
 $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
 if (mysqli_connect_errno()) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
-}
-// We don't have the password or email info stored in sessions so instead we can get the results from the database.
+} 
 $stmt = $con->prepare('SELECT users.n_cliente, fichas.n_ficha, fichas.estado, users.nome, fichas.created_at FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente WHERE users.n_cliente = ?');
 // In this case we can use the account ID to get the account info.
 $stmt->bind_param('i', $_SESSION['n_cliente']);
@@ -36,7 +36,6 @@ $stmt->close();
 
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Home Page</title>
 	<link href="style1.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">

@@ -2,7 +2,12 @@
 include "functions.php";    // Using database connection file here
 $pdo = pdo_connect_mysql();
 $msg = '';
+$db = mysqli_connect("localhost", "tugaspot_tugaspot", "Pra@513285776@@@@", "tugaspot_fcl");
 
+if ($_SESSION["role"] == 'U') {
+    header('Location: home.php');
+    exit;
+}
 if (isset($_GET['n_ficha'])) {
     if (!empty($_POST)) {
         $n_ficha = isset($_POST['n_ficha']) ? $_POST['n_ficha'] : NULL;
@@ -24,26 +29,29 @@ if (isset($_GET['n_ficha'])) {
     exit('Nenhuma ficha selecionada!');
 }
 ?>
-<?= template_header('SosToners-Editar Ficha') ?>
+<?= template_header('Editar Ficha') ?>
 <div class="content update">
     <h2>Editar Ficha #<?= $contact['n_ficha'] ?></h2>
     <form action="edit.php?n_ficha=<?= $contact['n_ficha'] ?>" method="post">
         <label for="n_ficha">Número Ficha</label>
         <label for="estado" style="margin-left: 40px;">Estado</label>
         <input type="text" name="n_ficha" placeholder="Número Ficha" value="<?= $contact['n_ficha'] ?>" id="n_ficha" readonly>
-        <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="margin-left: 40px;" autocomplete="off" Required>
-            <option <?= $contact['estado'] == 'Para diagnóstico' ? 'selected="selected"' : ''; ?> value="Para diagnóstico">Para diagnóstico</option>
-            <option <?= $contact['estado'] == 'Em diagnóstico' ? 'selected="selected"' : ''; ?> value="Em diagnóstico">Em diagnóstico</option>
-            <option <?= $contact['estado'] == 'Em testes' ? 'selected="selected"' : ''; ?> value="Em testes">Em testes</option>
-            <option <?= $contact['estado'] == 'Aguarda aprovação' ? 'selected="selected"' : ''; ?> value="Aguarda aprovação">Aguarda aprovação</option>
-            <option <?= $contact['estado'] == 'Aguarda peças' ? 'selected="selected"' : ''; ?> value="Aguarda peças">Aguarda peças</option>
-            <option <?= $contact['estado'] == 'Em laboratório' ? 'selected="selected"' : ''; ?> value="Em laboratório">Em laboratório</option>
-            <option <?= $contact['estado'] == 'Em reparação' ? 'selected="selected"' : ''; ?> value="Em reparação">Em reparação</option>
-            <option <?= $contact['estado'] == 'Em controlo' ? 'selected="selected"' : ''; ?> value="Em controlo">Em controlo</option>
-            <option <?= $contact['estado'] == 'Pronto para entrega' ? 'selected="selected"' : ''; ?> value="Pronto para entrega">Pronto para entrega</option>
-            <option <?= $contact['estado'] == 'Entregue' ? 'selected="selected"' : ''; ?> value="Entregue">Entregue</option>
-            <option <?= $contact['estado'] == 'Sem reparação' ? 'selected="selected"' : ''; ?> value="Sem reparação">Sem reparação</option>
-            <option <?= $contact['estado'] == 'Para devolução' ? 'selected="selected"' : ''; ?> value="Para devolução">Para devolução</option>
+         <select name="estado" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off">
+            <option disabled selected>-- Opções --</option>
+            <?php  // Using database connection file here
+            $records = mysqli_query($db, "SELECT * FROM estados");  // Use select query here 
+            foreach($records as $value)
+            {
+                if($value['opcoes'] == $contact['estado'])
+                {
+                     echo "<option selected='selected' value='".$value['opcoes']."'>".$value['opcoes']."</option>";
+                }
+                else
+                {
+                    echo "<option value='".$value['opcoes']."'>".$value['opcoes']."</option>";
+                }
+        }
+            ?>
         </select>
         <script type="text/javascript">
             var test = "<?= $estado; ?>";

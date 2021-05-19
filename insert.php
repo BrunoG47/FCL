@@ -1,10 +1,15 @@
 <?php
 require 'config.php';
 session_start();
+
+if ($_SESSION["role"] == 'U') {
+    header('Location: home.php');
+    exit;
+}
 $_SESSION['id'] = $_SESSION['i'];
 /* Attempt MySQL server connection. Assuming you are running MySQL
 server with default setting (user 'root' with no password) */
-$link = mysqli_connect("localhost", "root", "", "test");
+$link = mysqli_connect("localhost", "tugaspot_tugaspot", "Pra@513285776@@@@", "tugaspot_fcl");
 
 // Check connection
 if ($link === false) {

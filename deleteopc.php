@@ -2,6 +2,11 @@
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
+
+if ($_SESSION["role"] == 'U') {
+    header('Location: home.php');
+    exit;
+}
 // Check that the contact n_cliente exists
 if (isset($_GET['id'])) {
     // Select the record that is going to be deleted
@@ -29,7 +34,7 @@ if (isset($_GET['id'])) {
     exit('Nenhuma opção selecionada!');
 }
 ?>
-<?= template_header('SosToners-Eliminar Opção') ?>
+<?= template_header('Eliminar Opção') ?>
 
 <div class="content delete">
     <h2>Eliminar opção: <?= $contact['opcoes'] ?></h2>

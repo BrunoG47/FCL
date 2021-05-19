@@ -1,7 +1,13 @@
 <?php
+
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
+
+if ($_SESSION["role"] == 'U') {
+    header('Location: home.php');
+    exit;
+}
 // Check if the contact id exists, for example update.php?id=1 will get the contact with the id of 1
 if (isset($_GET['id'])) {
     if (!empty($_POST)) {
@@ -25,7 +31,7 @@ if (isset($_GET['id'])) {
     exit('Nenhuma opção selecionada!');
 }
 ?>
-<?= template_header('SosToners-Editar Opção') ?>
+<?= template_header('Editar Opção') ?>
 
 <div class="content update">
     <h2>Editar opção: <?= $contact['opcoes'] ?></h2>

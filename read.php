@@ -21,7 +21,7 @@ $stmt->execute();
 $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Get the total number of contacts, this is so we can determine whether there should be a next and previous button
 ?>
-<?= template_header('SosToners-Clientes') ?>
+<?= template_header('Clientes') ?>
 
 <div class="content read">
     <a href="create.php" class="create-contact">Criar Cliente</a>

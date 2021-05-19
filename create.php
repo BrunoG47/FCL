@@ -3,6 +3,11 @@ include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
 $role = 'U';
+
+if ($_SESSION["role"] == 'U') {
+    header('Location: home.php');
+    exit;
+}
 // Check if POST data is not empty
 if (!empty($_POST)) {
     // Post data not empty insert a new record
@@ -25,7 +30,7 @@ if (!empty($_POST)) {
     <meta http-equiv="refresh" content="0.5;url=read.php">
 <?php }
 ?>
-<?= template_header('SosToners-Criar') ?>
+<?= template_header('Criar Cliente') ?>
 
 <div class="content update">
     <h2>Criar Cliente</h2>

@@ -2,10 +2,6 @@
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
 // If the user is not logged in redirect to the login page...
-if (!isset($_SESSION['loggedin'])) {
-    header('Location: login.php');
-    exit;
-}
 if ($_SESSION["role"] == 'U') {
     header('Location: home.php');
     exit;
@@ -21,7 +17,7 @@ $stmt->execute();
 $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Get the total number of contacts, this is so we can determine whether there should be a next and previous button
 ?>
-<?= template_header('SosToners-Clientes') ?>
+<?= template_header('Definições') ?>
 
 <div class="content read">
     <a href="createopc.php" class="create-contact">Criar Opção</a>

@@ -2,9 +2,15 @@
     Criar ficha se for selecionado um cliente
 -->
 <?php
+
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
+
+if ($_SESSION["role"] == 'U') {
+    header('Location: home.php');
+    exit;
+}
 // Check if POST data is not empty
 if (!empty($_POST)) {
     // Post data not empty insert a new record
@@ -24,7 +30,7 @@ if (!empty($_POST)) {
     <meta http-equiv="refresh" content="0.5;url=admin.php">
 <?php }
 ?>
-<?= template_header('SosToners-Criar') ?>
+<?= template_header('Criar Ficha') ?>
 
 <div class="content update">
     <h2>Criar Ficha</h2>

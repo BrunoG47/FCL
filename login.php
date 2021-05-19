@@ -1,16 +1,19 @@
 <?php
-// Initialize the session
+require 'config.php';
 session_start();
-
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true ){
-    header("location: home.php");
-    exit;
+        if ($_SESSION["role"] == 'U') {
+	header('Location: home.php');
+	exit;
 }
-
-// Include config file
-require_once "config.php";
-
+}
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    if ($_SESSION["role"] == 'A') {
+	header('Location: admin.php');
+	exit;
+}
+}
 // Define variables and initialize with empty values
 $email = $password = $role = $redirect = "";
 $email_err = $password_err = $login_err = $role_err = "";
@@ -78,15 +81,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             header('Location: ' . $redirect);
                         } else {
                             // Password is not valid, display a generic error message
-                            $login_err = "Invalid password.";
+                            $login_err = "Password inválida.";
                         }
                     }
                 } else {
                     // Email doesn't exist, display a generic error message
-                    $login_err = "Invalid email.";
+                    $login_err = "Email não existe.";
                 }
             } else {
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Oops! Algo correu mal, tente novamente mais tarde.";
             }
 
             // Close statement

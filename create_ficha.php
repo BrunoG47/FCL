@@ -1,7 +1,17 @@
 <?php
+
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
+$db = mysqli_connect("localhost", "tugaspot_tugaspot", "Pra@513285776@@@@", "tugaspot_fcl");
+
+if (!$db) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+if ($_SESSION["role"] == 'U') {
+    header('Location: home.php');
+    exit;
+}
 // Check if POST data is not empty
 if (!isset($_GET['n_cliente'])) {
     echo '<script>';
@@ -41,12 +51,13 @@ if (!empty($_POST)) {
         $stmt->execute([$n_cliente, $n_ficha, $estado, $nota, $problema, $created_at]);
         // Output message
         $msg = 'Criação Concluida!';
+                echo $estado;
         header('Location: admin.php');
     }
 }
 
 ?>
-<?= template_header('SosToners-Criar') ?>
+<?= template_header('Criar Ficha') ?>
 
 <div class="content update">
     <h2>Criar Ficha</h2>
@@ -131,19 +142,14 @@ if (!empty($_POST)) {
         <label for="estado">Estado</label>
         <label for="problema">Problema Inicial</label>
         <select name="estado" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off">
-            <option value="" disabled selected hidden>Selecione o estado da ficha</option>
-            <option value="Para diagnóstico">Para diagnóstico</option>
-            <option value="Em diagnóstico">Em diagnóstico</option>
-            <option value="Em testes">Em testes</option>
-            <option value="Aguarda aprovação">Aguarda aprovação</option>
-            <option value="Aguarda peças">Aguarda peças</option>
-            <option value="Em laboratório">Em laboratório</option>
-            <option value="Em reparação">Em reparação</option>
-            <option value="Em controlo">Em controlo</option>
-            <option value="Pronto para entrega">Pronto para entrega</option>
-            <option value="Entregue">Entregue</option>
-            <option value="Sem reparação">Sem reparação</option>
-            <option value="Para devolução">Para devolução</option>
+            <option disabled selected>-- Opções --</option>
+            <?php  // Using database connection file here
+            $records = mysqli_query($db, "SELECT opcoes FROM estados");  // Use select query here 
+
+            while ($data = mysqli_fetch_array($records)) {
+                echo "<option value='" . $data['opcoes'] . "'>" . $data['opcoes'] . "</option>";  // displaying data in option menu
+            }
+            ?>
         </select>
         <input type="text" name="problema" placeholder="Problema Inicial" id="problema" style=" margin-left: 25px;" autocomplete="off">
         <label for="nota">Nota</label>

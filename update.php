@@ -3,6 +3,10 @@ include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
 $role = 'U';
+if ($_SESSION["role"] == 'U') {
+    header('Location: home.php');
+    exit;
+}
 // Check if the contact id exists, for example update.php?id=1 will get the contact with the id of 1
 if (isset($_GET['n_cliente'])) {
     if (!empty($_POST)) {
@@ -32,7 +36,7 @@ if (isset($_GET['n_cliente'])) {
     exit('Nenhum número cliente selecionado!');
 }
 ?>
-<?= template_header('SosToners-Editar Cliente') ?>
+<?= template_header('Editar Cliente') ?>
 
 <div class="content update">
     <h2>Editar Cliente #<?= $contact['n_cliente'] ?></h2>
