@@ -1,0 +1,22 @@
+Alterar pág home.php
+
+No cliente ao clicar na ficha apresentar todas as instâncias em que a ficha esteve
+
+Criar pág para criação de grupos
+
+Criar página para introduzir funcionários nos grupos
+
+Criar grupos
+
+Criar campo na tabela fichas para guardar criador inicial da ficha (Salvar o $SESSION_nome no criador da ficha)
+
+Alterar código para criar em vez de desativar
+if($_SESSION['role'] != "F"
+{
+echo '<a href="create_fun.php" class="create-contact" id="fun">Criar Funcionário</a>
+}
+
+Criar campo na tabela fichas para guardar criador inicial da ficha
+(Salvar o $session_nome no criador da ficha)
+
+Alterar edit.php das fichas
