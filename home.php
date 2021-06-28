@@ -6,37 +6,29 @@ if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
 	exit;
 }
- 
-$DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'tugaspot_tugaspot';
-$DATABASE_PASS = 'Pra@513285776@@@@';
-$DATABASE_NAME = 'tugaspot_fcl';
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-if (mysqli_connect_errno()) {
-	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
-} 
-$stmt = $con->prepare('SELECT users.n_cliente, fichas.n_ficha, fichas.estado, users.nome, fichas.created_at FROM users INNER JOIN fichas ON users.n_cliente = fichas.n_cliente WHERE users.n_cliente = ?');
-// In this case we can use the account ID to get the account info.
-$stmt->bind_param('i', $_SESSION['n_cliente']);
-$stmt->execute();
-$stmt->bind_result($n_cliente, $n_ficha, $estado, $nome, $created_at);
-$stmt->fetch();
-$_SESSION['i'] = $_SESSION['n_cliente'];
-$stmt->execute();
-$records = array();
-
-$result = $stmt->get_result();
-while ($data = $result->fetch_assoc()) {
-	$records[] = $data;
+if ($_SESSION["role"] == 'G') {
+    header('Location: empresa.php');
+    exit;
 }
-$stmt->close();
+if ($_SESSION["role"] == 'F') {
+    header('Location: empresa.php');
+    exit;
+}
+include 'functions.php';
+$pdo = pdo_connect_mysql();
+$stmt = $pdo->prepare('SELECT DISTINCT users.nome, users.n_cliente, fichas.n_ficha, fichas.problema, fichas.estado_ficha,
+n1.estado, n1.nota, n1.created_at 
+FROM users
+INNER JOIN fichas ON users.n_cliente = fichas.n_cliente
+INNER JOIN notas AS n1 on n1.ficha = fichas.n_ficha 
+LEFT JOIN notas as n2
+ON (n1.ficha = n2.ficha AND n1.created_at < n2.created_at) WHERE users.n_cliente = ?');
+$stmt->execute([$_SESSION['n_cliente']]);
+$contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<!DOCTYPE html>
-<html>
 
+<html>
 <head>
-	<meta charset="utf-8">
-	<title>Home Page</title>
 	<link href="style1.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -51,41 +43,69 @@ $stmt->close();
 		</div>
 	</nav>
 	<div class="content">
-		<table>
+		<table id="myTable">
 			<style>
-				table {
-					font-family: arial, sans-serif;
-					border-collapse: collapse;
-					width: 100%;
-				}
+			#myTable {
+				border-collapse: collapse;
+				width: 100%;
+				border: 1px solid #ddd;
+				font-size: 18px;
+			}
 
-				td,
-				th {
-					border: 2px solid #dddddd;
-					text-align: center;
-					padding: 8px;
-				}
+			#myTable th,
+			#myTable td {
+				text-align: left;
+				padding: 12px;
+			}
 
-				tr:nth-child(even) {
-					background-color: #dddddd;
-				}
-			</style>
-			<p>Bem-vindo, <?= $nome ?>!</p>
+			#myTable tr {
+				border-bottom: 1px solid #ddd;
+			}
+
+			#myTable tr.header,
+			#myTable tr:hover {
+				background-color: #f1f1f1;
+			}
+
+			table {
+				font-family: arial, sans-serif;
+				border-collapse: collapse;
+				width: 100%;
+			}
+
+			td,
+			th {
+				border: 1px solid #000000;
+				text-align: center;
+				padding: 8px;
+				border-bottom: 1px solid #000000;
+			}
+
+			tr:nth-child(even) {
+				background-color: #dddddd;
+			}
+		</style>
+			<p>Bem-vindo, <?= $contacts[0]['nome'] ?>!</p>
 			<h2>Fichas</h2>
 			<tr>
-				<th>Nº Cliente:</th>
+				<th>Estado Ficha:</th>
 				<th>Nº Ficha:</th>
-				<th>Estado:</th>
+				<th>Problema:</th>
+				<th>Ponto:</th>
+				<th>Nota:</th>
 				<th>Data de Criação:</th>
 			</tr>
 			<tr>
-					<?php foreach ($records as $show) { ?>
-							<td><?php echo $show['n_cliente']; ?></td>
-							<td><?php echo $show['n_ficha']; ?></td>
-							<td><?php echo $show['estado']; ?></td>
-							<td><?php echo $show['created_at']; ?></td>
-							<tr></tr>
-				<?php } ?>
+					<?php foreach ($contacts as $contact) : ?>
+				<tr>
+				    <td style="text-align: center;"><?= $contact['estado_ficha'] ?></td>
+				    <td style="text-align: center;"><?= $contact['n_ficha'] ?></td>
+					<td style="text-align: center;"><?= $contact['problema'] ?></td>
+					<td style="text-align: center;"><?= $contact['estado'] ?></td>
+					<td style="text-align: center;"><?= $contact['nota'] ?></td>
+					<td style="text-align: center;"><?= $contact['created_at'] ?></td>
+				</tr>
+			<?php endforeach; ?>
 			</tr>
 		</table>
 	</div>

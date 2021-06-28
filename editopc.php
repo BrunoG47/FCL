@@ -3,7 +3,12 @@
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
-
+session_start();
+// If the user is not logged in redirect to the login page...
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
 if ($_SESSION["role"] == 'U') {
     header('Location: home.php');
     exit;

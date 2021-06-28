@@ -6,11 +6,21 @@
 include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
-
+include 'config.php';
+if (mysqli_connect_errno()) {
+	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+} 
+session_start();
+// If the user is not logged in redirect to the login page...
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
 if ($_SESSION["role"] == 'U') {
     header('Location: home.php');
     exit;
 }
+$estado_ficha = "Aberta";
 // Check if POST data is not empty
 if (!empty($_POST)) {
     // Post data not empty insert a new record
@@ -23,8 +33,11 @@ if (!empty($_POST)) {
     $problema = isset($_POST['problema']) ? $_POST['problema'] : '';
     $created_at = isset($_POST['created_at']) ? $_POST['created_at'] : date('Y-m-d H:i:s');
     // Insert new record into the contacts table
-    $stmt = $pdo->prepare('INSERT INTO fichas VALUES (?, ?, ?, ?, ?, ?)');
-    $stmt->execute([$n_cliente, $n_ficha, $estado, $nota, $problema, $created_at]);
+    $stmt = $pdo->prepare('INSERT INTO fichas(n_cliente, n_ficha, problema, estado_ficha, created_at) VALUES (?, ?, ?, ?, ?)');
+    $stmt->execute([$n_cliente, $n_ficha, $problema, $estado_ficha, $created_at]);
+    $ult_id = $pdo->lastInsertId();
+    $sql = $pdo->prepare('INSERT INTO notas (ficha, user_id, estado, nota, created_at) VALUES ( ?, ?, ?, ?, ?)');
+    $sql->execute([$ult_id, $n_cliente, $estado, $nota, $created_at]);
     // Output message
     $msg = 'Criação Concluida!'; ?>
     <meta http-equiv="refresh" content="0.5;url=admin.php">
@@ -36,32 +49,29 @@ if (!empty($_POST)) {
     <h2>Criar Ficha</h2>
     <form action="create_ficha1.php" method="post">
         <label for="n_cliente">Número Cliente</label>
-        <label for="n_ficha">Número Ficha</label>
-        <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" value="<?= $_GET['n_cliente'] ?>" autocomplete="off" required readonly>
-        <input type="text" name="n_ficha" placeholder="Número Ficha" value="automático" id="n_ficha" autocomplete="off" readonly>
+        <input type="text" name="n_cliente" placeholder="Número Cliente" id="n_cliente" value="<?= $_GET['n_cliente'] ?>" autocomplete="off" style="margin-left: -425px; margin-top: 40px;" required readonly>
+        <input type="text" name="n_ficha" placeholder="Número Ficha" value="automático" id="n_ficha" autocomplete="off" readonly hidden>
         <label for="estado">Estado</label>
         <label for="nota">Nota</label>
-        <select name="estado" method="post" placeholder="Insira estado" id="selectBoxId" style="width: 400px; height: 43px;" autocomplete="off" Required>
-            <option value="" disabled selected hidden>Selecione o estado da ficha</option>
-            <option value="Para diagnóstico">Para Diagnóstico</option>
-            <option value="Em diagnóstico">Em Diagnóstico</option>
-            <option value="Em testes">Em testes</option>
-            <option value="Aguarda aprovação">Aguarda aprovação</option>
-            <option value="Aguarda peças">Aguarda peças</option>
-            <option value="Em laboratório">Em laboratório</option>
-            <option value="Em reparação">Em reparação</option>
-            <option value="Em controlo">Em controlo</option>
-            <option value="Pronto para entrega">Pronto para entrega</option>
-            <option value="Entregue">Entregue</option>
-            <option value="Sem reparação">Sem reparação</option>
-            <option value="Para devolução">Para devolução</option>
+        <select name="estado" placeholder="Insira estado" id="selectBoxId" style="border: 1px solid #000000; width: 400px; height: 43px; margin-top: -58px;" autocomplete="off">
+            <option disabled selected>-- Opções --</option>
+            <?php  // Using database connection file here
+            $records = mysqli_query($link, "SELECT id, opcoes FROM estados");  // Use select query here 
+
+            while ($data = mysqli_fetch_array($records)) {
+                echo "<option value='" . $data['id'] . "'>" . $data['opcoes'] . "</option>";  // displaying data in option menu
+            }
+            ?>
         </select>
-        <input type="text" name="nota" placeholder="Nota" style="margin-left: 25px" id="nota" autocomplete="off">
-        <label for="problema">Problema Inicial</label>
-        <label for="created_at">Data de Criação</label>
-        <input type="text" name="problema" placeholder="Problema Inicial" id="problema" autocomplete="off">
-        <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i') ?>" id="created_at">
-        <input type="submit" value="Criar Ficha">
+        <input type="text" name="nota" placeholder="Nota" style="width: 400px; height: 43px;" id="nota" autocomplete="off">
+        <label for="problema" style="margin-top: -40px;">Problema Inicial</label>
+        <label for="estado_ficha">Estado da ficha</label>
+        <input type="text" name="problema" placeholder="Problema Inicial" id="problema" autocomplete="off" style="width: 400px; height: 43px; margin-top: -58px;">
+        <select name="estado_ficha" id="selectId" style="border: 1px solid #000000; width: 400px; height: 43px;" autocomplete="off" readonly>
+            <option>Aberta</option>
+        </select>
+        <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i') ?>" id="created_at" style="margin-left: -425px; margin-top: 40px;" hidden>
+        <input type="submit" value="Criar Ficha" style="width: 300px; height: 43px; margin-left: 40px; margin-top: -3px;">
     </form>
     <?php if ($msg) : ?>
         <p><?= $msg ?></p>
