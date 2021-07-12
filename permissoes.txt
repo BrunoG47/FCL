@@ -1,0 +1,11 @@
+select grupo from users where n_cliente = $_SESSION n_cliente
+Select create_ficha from grupo where id = $id_grupo
+if(create_ficha = 1) {
+echo <a href create_ficha.php>
+}
+
+create_ficha.php
+
+if(create_ficha = 0){
+redirect "fichas.php"
+}
