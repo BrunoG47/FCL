@@ -7,34 +7,24 @@ if (!isset($_SESSION['loggedin'])) {
 	exit;
 }
 if ($_SESSION["role"] == 'U') {
-	header('Location: home.php');
-	exit;
+    header('Location: home.php');
+    exit;
 }
-if ($_SESSION["role"] == 'G') {
-	header('Location: empresa.php');
-	exit;
-}
-if ($_SESSION["role"] == 'F') {
-	header('Location: empresa.php');
-	exit;
+if ($_SESSION["role"] == 'A'){
+    header('Location: admin.php');
+    exit;
 }
 include 'functions.php';
-// Connect to MySQL database
 $pdo = pdo_connect_mysql();
-// Get the page via GET request (URL param: page), if non exists default the page to 1
-// Number of records to show on each page
-// Prepare the SQL statement and get records from our contacts table, LIMIT will determine the page
-$stmt = $pdo->prepare('SELECT DISTINCT users.n_cliente, users.nome, users.email, users.telefone, users.nif, fichas.n_ficha, fichas.problema, fichas.estado_ficha,
+$stmt = $pdo->prepare('SELECT users.n_cliente, users.nome, users.email, users.telefone, users.nif, fichas.n_ficha, fichas.problema, fichas.estado_ficha,fichas.marca, fichas.modelo, fichas.equipamento, fichas.criador,
 n1.estado, n1.nota, n1.created_at 
 FROM users
 INNER JOIN fichas ON users.n_cliente = fichas.n_cliente
 INNER JOIN notas AS n1 on n1.ficha = fichas.n_ficha 
 LEFT JOIN notas as n2
-ON (n1.ficha = n2.ficha AND n1.created_at < n2.created_at) WHERE n2.created_at  IS NULL');
+ON (n1.ficha = n2.ficha AND n1.created_at < n2.created_at) WHERE n2.created_at IS NULL');
 $stmt->execute();
-// Fetch the records so we can display them in our template.
 $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// Get the total number of contacts, this is so we can determine whether there should be a next and previous button
 ?>
 <?= template_header('Fichas') ?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
@@ -53,13 +43,13 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				border-collapse: collapse;
 				width: 100%;
 				border: 1px solid #ddd;
-				font-size: 18px;
+				font-size: 15px;
 			}
 
 			#myTable th,
 			#myTable td {
-				text-align: left;
-				padding: 12px;
+				text-align: center;
+				padding: 8px;
 			}
 
 			#myTable tr {
@@ -81,7 +71,7 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			th {
 				border: 2px solid #dddddd;
 				text-align: center;
-				padding: 8px;
+				padding: 4px;
 			}
 
 			tr:nth-child(even) {
@@ -91,16 +81,16 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		<thead>
 			<tr>
 			    <th style="text-align: center;">Estado</th>
-			    <th style="text-align: center;">Nº Ficha</th>
-				<th style="text-align: center;">Nº Cliente</th>
-				<th style="text-align: center;">Nome Cliente</th>
-				<th style="text-align: center;" hidden>Email Cliente</th>
-				<th style="text-align: center;">Telefone Cliente</th>
-				<th style="text-align: center;" hidden>Nif Cliente</th>
-                <th style="text-align: center;">Problema inicial</th>
+			    <th style="text-align: center;">Número</th>
+				<th style="text-align: center;">Nome</th>
+				<th style="text-align: center;" hidden>Email</th>
+				<th style="text-align: center;" hidden>Nif</th>
+                <th style="text-align: center;">Problema</th>
 				<th style="text-align: center;">Ponto</th>
-				<th style="text-align: center;">Nota</th>
-				<th style="text-align: center;">Data de Criação</th>
+				<th style="text-align: center;">Marca</th>
+				<th style="text-align: center;">Modelo</th>
+				<th style="text-align: center;">Técnico</th>
+				<th style="text-align: center;">Criação</th>
 				<th style="text-align: center;">Editar</th>
 			</tr>
 		</thead>
@@ -109,15 +99,15 @@ $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				<tr>
 				    <td style="text-align: center;"><?= $contact['estado_ficha'] ?></td>
 				    <td style="text-align: center;"><?= $contact['n_ficha'] ?></td>
-					<td style="text-align: center;"><?= $contact['n_cliente'] ?></td>
 					<td style="text-align: center;"><?= $contact['nome'] ?></td>
 					<td style="text-align: center;" hidden><?= $contact['email'] ?></td>
-					<td style="text-align: center;"><?= $contact['telefone'] ?></td>
 					<td style="text-align: center;" hidden><?= $contact['nif'] ?></td>
 					<td style="text-align: center;"><?= $contact['problema'] ?></td>
 					<td style="text-align: center;"><?= $contact['estado'] ?></td>
-					<td style="text-align: center;"><?= $contact['nota'] ?></td>
-					<td style="text-align: center;"><?= $contact['created_at'] ?></td>
+					<td style="text-align: center;"><?= $contact['marca'] ?></td>
+					<td style="text-align: center;"><?= $contact['modelo'] ?></td>
+					<td style="text-align: center;"><?= $contact['criador'] ?></td>
+					<td style="text-align: center; font-size: 13px;"><?= $contact['created_at'] ?></td>
 				    <td class="actions">
 						<a href="edit.php?n_ficha=<?= $contact['n_ficha'] ?>&n_cliente=<?= $contact['n_cliente'] ?>" class="add"><i style="color: black;" class="fas fa-pen fa-xs"></i></a>
 					</td>

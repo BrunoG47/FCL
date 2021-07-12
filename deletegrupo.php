@@ -12,20 +12,26 @@ if ($_SESSION["role"] == 'U') {
     header('Location: home.php');
     exit;
 }
-// Check that the contact n_cliente exists
+if ($_SESSION["role"] == 'F') {
+    header('Location: settings.php');
+    exit;
+}
 if (isset($_GET['id'])) {
-    // Select the record that is going to be deleted
-    $stmt = $pdo->prepare('SELECT * FROM estados WHERE id = ?');
+    $sqq = $pdo->prepare('SELECT grupo FROM users WHERE grupo = ?');
+    $sqq->execute([$_GET['id']]);
+    $c = $sqq->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare('SELECT * FROM grupo WHERE id = ?');
     $stmt->execute([$_GET['id']]);
     $contact = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$contact) {
-        exit('Não existe nenhuma opção com esse número!');
+        exit('Não existe nenhum grupo com esse id!');
     }
     // Make sure the user confirms beore deletion
-    if (isset($_GET['confirm'])) {
+    if(empty($c)){
+        if (isset($_GET['confirm'])) {
         if ($_GET['confirm'] == 'Sim') {
             // User clicked the "Yes" button, delete record
-            $stmt = $pdo->prepare('DELETE FROM estados WHERE id = ?');
+            $stmt = $pdo->prepare('DELETE FROM grupo WHERE id = ?');
             $stmt->execute([$_GET['id']]);
             $msg = 'Opção Eliminada!'; ?>
             <meta http-equiv="refresh" content="0.5;url=settings.php">
@@ -35,21 +41,24 @@ if (isset($_GET['id'])) {
             exit;
         }
     }
+    } else {
+        exit('Existem funcionários com este grupo');
+    }
 } else {
-    exit('Nenhuma opção selecionada!');
+    exit('Nenhum grupo selecionado!');
 }
 ?>
-<?= template_header('Eliminar Opção') ?>
+<?= template_header('Eliminar Grupo') ?>
 
 <div class="content delete">
-    <h2>Eliminar opção: <?= $contact['opcoes'] ?></h2>
+    <h2>Eliminar grupo: <?= $contact['name'] ?></h2>
     <?php if ($msg) : ?>
         <p><?= $msg ?></p>
     <?php else : ?>
-        <p>Tem a certeza que pretende eliminar a opção: <?= $contact['opcoes'] ?>?</p>
+        <p>Tem a certeza que pretende eliminar o grupo: <?= $contact['name'] ?>?</p>
         <div class="yesno">
-            <a href="deleteopc.php?id=<?= $contact['id'] ?>&confirm=Sim">Sim</a>
-            <a href="deleteopc.php?id=<?= $contact['id'] ?>&confirm=Não">Não</a>
+            <a href="deletegrupo.php?id=<?= $contact['id'] ?>&confirm=Sim">Sim</a>
+            <a href="deletegrupo.php?id=<?= $contact['id'] ?>&confirm=Não">Não</a>
         </div>
     <?php endif; ?>
 </div>

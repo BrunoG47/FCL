@@ -14,6 +14,18 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 	exit;
 }
 }
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    if ($_SESSION["role"] == 'G') {
+	header('Location: empresa.php');
+	exit;
+}
+}
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    if ($_SESSION["role"] == 'F') {
+	header('Location: empresa.php');
+	exit;
+}
+}
 // Define variables and initialize with empty values
 $email = $password = $role = $redirect = "";
 $email_err = $password_err = $login_err = $role_err = "";
@@ -75,8 +87,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 $redirect = 'home.php';
                             } else if ($role == 'A') {
                                 $redirect = 'admin.php';
-                            } else if ($role == 'R') {
-                                $redirect = 'revendedor.html';
+                            } else if ($role == 'G') {
+                                $redirect = 'empresa.php';
+                            } else if ($role == 'F') {
+                                $redirect = 'empresa.php';
                             }
                             header('Location: ' . $redirect);
                         } else {
@@ -134,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="email">
                     <i class="fas fa-user"></i>
                 </label>
-                <input type="email" name="email" class="form-control email" placeholder="Email" autocomplete="off" <?php echo (!empty($email_err)) ? ':invalid' : ''; ?> value="<?php echo $email; ?>">
+                <input type="email" name="email" class="form-control email" placeholder="Email" <?php echo (!empty($email_err)) ? ':invalid' : ''; ?> value="<?php echo $email; ?>">
                 <?php
                 if (!empty($email_err)) {
                     echo '<div class="alert alert-danger">' . $email_err . '</div>';

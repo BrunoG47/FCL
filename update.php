@@ -3,6 +3,12 @@ include 'functions.php';
 $pdo = pdo_connect_mysql();
 $msg = '';
 $role = 'U';
+session_start();
+// If the user is not logged in redirect to the login page...
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
 if ($_SESSION["role"] == 'U') {
     header('Location: home.php');
     exit;
@@ -41,22 +47,20 @@ if (isset($_GET['n_cliente'])) {
 <div class="content update">
     <h2>Editar Cliente #<?= $contact['n_cliente'] ?></h2>
     <form action="update.php?n_cliente=<?= $contact['n_cliente'] ?>" method="post">
-        <label for="n_cliente">Número Cliente</label>
         <label for="nome">Nome</label>
-        <input type="text" name="n_cliente" placeholder="26" value="<?= $contact['n_cliente'] ?>" id="n_cliente" autocomplete="off" readonly>
-        <input type="text" name="nome" placeholder="Nome cliente" value="<?= $contact['nome'] ?>" id="nome" autocomplete="off">
+        <input type="text" name="n_cliente" placeholder="26" value="<?= $contact['n_cliente'] ?>" id="n_cliente" autocomplete="off" readonly hidden>
+        <input type="text" name="nome" placeholder="Nome cliente" value="<?= $contact['nome'] ?>" id="nome" autocomplete="off" style="margin-left: -425px; margin-top: 40px;">
         <label for="email">Email</label>
         <label for="telefone">Telefone</label>
-        <input type="text" name="email" placeholder="Email cliente" value="<?= $contact['email'] ?>" id="email" autocomplete="off">
+        <input type="text" name="email" placeholder="Email cliente" value="<?= $contact['email'] ?>" id="email" autocomplete="off" style="width: 400px; height: 43px; margin-top: -58px;">
         <input type="text" name="telefone" placeholder="Contacto cliente" value="<?= $contact['telefone'] ?>" id="telefone" autocomplete="off">
-        <label for="nif">Nif</label>
+        <label for="nif" style="margin-top: -40px;">Nif</label>
         <label for="morada">Morada</label>
-        <input type="text" name="nif" placeholder="Nif cliente" value="<?= $contact['nif'] ?>" id="nif" autocomplete="off">
+        <input type="text" name="nif" placeholder="Nif cliente" value="<?= $contact['nif'] ?>" id="nif" autocomplete="off" style="width: 400px; height: 43px; margin-top: -58px;">
         <input type="text" name="morada" placeholder="Morada cliente" value="<?= $contact['morada'] ?>" id="morada" autocomplete="off">
-        <label for="codigo">Cógido</label>
-        <label for="created_at">Data de Criação</label>
-        <input type="text" name="codigo" placeholder="Código Postal cliente" value="<?= $contact['codigo'] ?>" id="codigo" autocomplete="off">
-        <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i', strtotime($contact['created_at'])) ?>" id="created_at">
+        <label for="codigo" style="margin-top: -40px;">Código Postal</label>
+        <input type="text" name="codigo" placeholder="Código Postal cliente" value="<?= $contact['codigo'] ?>" id="codigo" autocomplete="off" style="width: 400px; height: 43px; margin-left: 425px; margin-top: -58px;">
+        <input type="datetime-local" name="created_at" value="<?= date('Y-m-d\TH:i', strtotime($contact['created_at'])) ?>" id="created_at" hidden>
         <input type="submit" value="Editar">
     </form>
     <?php if ($msg) : ?>
